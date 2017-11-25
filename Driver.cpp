@@ -161,6 +161,7 @@
 // Header for the TemplateExample class
 #include "NodalBST.h"
 #include "NodalBST.cpp" // Commented out here, but appended to the end of TemplateExample.h
+#include "GenericNode.cpp"
 
 // Header for the Puzzle class
 // #include "stopwordBST.h"
@@ -200,7 +201,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 
    bool structTest = 1;
 
-   bool BSTNodeTest = 1;
+   bool BSTNodeTest = 0;
    // If true, attempts to read and parse a stopword list
    bool stopwordRead = 0;
 
@@ -239,30 +240,32 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 
    // Test case 02: Confirm that templating of a class functions properly.
    if (templateTest == true) {
-      cout << "templateTest == true" << endl;
-
-      NodalBST<int> TempObj;
-      TempObj.SetValue( 2 );
-      int testInt = TempObj.GetValue();
-
-      cout << "Test Int: " << testInt << endl;
+      NodalBST<int> tempObj;
+      tempObj.SetValue( 2 );
+      int nValue = tempObj.GetValue();
+      cout << "nValue: " << nValue << endl;
    }
 
    // Test case 03: Confirm that templated node struct can be insantiated
    if (structTest == true) {
       cout << "structTest == true" << endl;
-      BSTNode<string> someNode = new BSTNode("test");
-      someNode.nodeData = "Foo Bar Bazzle";
-      cout << "Generic Struct Test: " << someNode.nodeData << endl;
+      GenericNode<string> testObj;
+      cout << testObj.isDeleted << endl;
+      cout << testObj.leftPtr << endl;
+      cout << testObj.rightPtr << endl;
+      testObj.nodeData = "Set this string";
+      cout << testObj.nodeData << endl;
+      // Test the constructor using data
+      GenericNode<string> testObj2("Does this work?");
+      cout << testObj2.nodeData << endl;
+      cout << endl;
    }
+
+
 
    // Test case 04: Confirm that templated node struct can be insantiated
    if (BSTNodeTest == true) {
       cout << "BSTNodeTest == true" << endl;
-      NodalBST<string> test04BST;
-      test04BST.SetValue("42");
-      cout << "nodalBST test: " << test04BST.GetValue() << endl;
-      cout << "nodalBST test: " << test04BST.headPtr << endl;
    }
 
 
