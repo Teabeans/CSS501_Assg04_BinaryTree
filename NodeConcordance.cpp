@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
+#include "LinkedListContext.h"
 using namespace std;
 
 struct NodeConcordance {
-   string nodeData;
+   LinkedListContext nodeData;
    bool isDeleted;
    NodeConcordance* leftPtr;
    NodeConcordance* rightPtr;
@@ -14,7 +15,8 @@ struct NodeConcordance {
       rightPtr = nullptr;
    }
 
-   NodeConcordance(string someData) {
+   // TODO: 
+   NodeConcordance(LinkedListContext someData) {
       nodeData = someData;
       isDeleted = 0;
       leftPtr = nullptr;
