@@ -159,9 +159,10 @@
 //#include "genericBST.h"
 
 // Header for the TemplateExample class
-#include "NodalBST.h"
-#include "NodalBST.cpp" // Commented out here, but appended to the end of TemplateExample.h
-#include "GenericNode.cpp"
+#include "BSTString.h"
+#include "NodeString.cpp"
+#include "LinkedListContext.h"
+#include "NodeContext.cpp"
 
 // Header for the Puzzle class
 // #include "stopwordBST.h"
@@ -192,23 +193,45 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // |                         |
 // X-------------------------X
 
-   // If true, uses an input to check row alignment
-   bool stopwordInstantiate = 0;
-   // If true, uses an input to check row alignment
-   bool commandArgument = 1;
-   // If true, attempts to read and parse a stopword list
-   bool templateTest = 1;
+   // BSTString test
+   bool unitTest00 = 1;
 
-   bool structTest = 1;
+   // Command line argument reception test
+   bool unitTest01 = 1;
 
-   bool BSTNodeTest = 0;
-   // If true, attempts to read and parse a stopword list
-   bool stopwordRead = 0;
+   // File load test and tree build
+   bool unitTest02 = 1;
 
+   // toString() test
+   bool unitTest03 = 1;
 
+   // find() test
+   bool unitTest04 = 1;
 
+   // setDelete() test
+   bool unitTest05 = 1;
 
+   // Context node test
+   bool unitTest06 = 1;
 
+   // Linked List of contexts test (data field of a ConcordanceBST)
+   bool unitTest07 = 1;
+
+   bool unitTest08 = 0;
+
+   bool unitTest09 = 0;
+
+   bool unitTest10 = 0;
+
+   bool unitTest11 = 0;
+
+   bool unitTest12 = 0;
+
+   bool unitTest13 = 0;
+
+   bool unitTest14 = 0;
+
+   bool unitTest15 = 0;
 
 // X--------------------X
 // |                    |
@@ -224,13 +247,17 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // |                  |
 // X------------------X
 
-   // Test case 00: stopwordBST object can be instantiated.
-   if (stopwordInstantiate == true) {
+   // Test case 00: BSTString test
+   if (unitTest00 == true) {
+      cout << "UnitTest00: BSTString Instantiation test" << endl;
+      BSTString testObj;
+      cout << "Root node data: " << testObj.getRootValue() << endl;
+      cout << endl;
    }
 
-   // Test case 01: Confirm that command line argument can be received and accessed.
-   if (commandArgument == true) {
-      cout << "commandArgument == true" << endl;
+   // Test case 01: Command line argument reception test
+   if (unitTest01 == true) {
+      cout << "UnitTest01: Command Line Argument test" << endl;
       string programLocation = argv[0];
       string fileLocation = argv[1];
       cout << "Arg[0] Program Location: " << programLocation << endl;
@@ -238,36 +265,89 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << endl;
    }
 
-   // Test case 02: Confirm that templating of a class functions properly.
-   if (templateTest == true) {
-      NodalBST<int> tempObj;
-      tempObj.SetValue( 2 );
-      int nValue = tempObj.GetValue();
-      cout << "nValue: " << nValue << endl;
-   }
-
-   // Test case 03: Confirm that templated node struct can be insantiated
-   if (structTest == true) {
-      cout << "structTest == true" << endl;
-      GenericNode<string> testObj;
-      cout << testObj.isDeleted << endl;
-      cout << testObj.leftPtr << endl;
-      cout << testObj.rightPtr << endl;
-      testObj.nodeData = "Set this string";
-      cout << testObj.nodeData << endl;
-      // Test the constructor using data
-      GenericNode<string> testObj2("Does this work?");
-      cout << testObj2.nodeData << endl;
+   // Test case 02: File load test and tree build test
+   if (unitTest02 == true) {
+      cout << "UnitTest02: File load test (stopwords)" << endl;
+      string fileLocation = "stopwords.txt";
+      BSTString fileReader(fileLocation);
       cout << endl;
    }
 
-
-
-   // Test case 04: Confirm that templated node struct can be insantiated
-   if (BSTNodeTest == true) {
-      cout << "BSTNodeTest == true" << endl;
+   // Test case 03: printout() test
+   if (unitTest03 == true) {
+      cout << "UnitTest03: Stopword tree build test" << endl;
+      BSTString fileReader("stopwords.txt");
+      fileReader.printout();
+      cout << endl;
    }
 
+   // Test case 04: find() test
+   if (unitTest04 == true) {
+      cout << "UnitTest04: Find() test" << endl;
+      BSTString findTester("stopwords.txt");
+      cout << "hooligan  : " << findTester.find("hooligan") << endl;
+      cout << "nibleheim : " << findTester.find("nibleheim") << endl;
+      cout << endl;
+   }
+
+   // Test case 05: setDelete() test
+   if (unitTest05 == true) {
+      cout << "UnitTest05: setDelete() test" << endl;
+      BSTString deleteTester("stopwords.txt");
+      deleteTester.printout();
+      cout << "setDelete(Hooligan)  : " << deleteTester.setDelete("hooligan") << endl;
+      cout << "setDelete(nibleheim) : " << deleteTester.setDelete("nibleheim") << endl;
+      deleteTester.printout();
+      cout << endl;
+   }
+
+   // Test case 06: Node context test
+   if (unitTest06 == true) {
+      cout << "UnitTest06: Context node tests" << endl;
+      NodeContext testNode("beforetest", "aftertest");
+      cout << "prevContext : " << testNode.prevContext << endl;
+      cout << "postContext : " << testNode.postContext << endl;
+      cout << "nextPtr     : " << testNode.nextPtr << endl;
+      cout << "Making second node..." << endl;
+      NodeContext pointTest("pretest", "posttest");
+      cout << "prevContext : " << pointTest.prevContext << endl;
+      cout << "postContext : " << pointTest.postContext << endl;
+      cout << "nextPtr     : " << pointTest.nextPtr << endl;
+      // Link two nodes
+      cout << "Linking..." << endl;
+      testNode.nextPtr = &pointTest;
+      cout << "nextPtr      : " << testNode.nextPtr << endl;
+      cout << "nextPtr.data : " << testNode.nextPtr->prevContext << testNode.nextPtr->postContext << endl;
+      cout << endl;
+   }
+
+   // Test case 07: Linked List of Contexts test (data field of a Concordance BST)
+   if (unitTest07 == true) {
+      cout << "UnitTest07: Linked list instantiation test" << endl;
+      LinkedListContext testList();
+      // Headnode constructor test
+      LinkedListContext testList2("keyword!", "prevContext", "postContext");
+      cout << "TestList keyword  : " << testList2.keyword << endl;
+      cout << "Headnode context  : " << testList2.headNodePtr->prevContext << endl;
+      cout << "Headnode context  : " << testList2.headNodePtr->postContext << endl;
+      cout << "Headnode nextPtr  : " << testList2.headNodePtr->nextPtr << endl;
+      // Append() tests
+      cout << "Appending..." << endl;
+      testList2.append("nextString", "nextnextString");
+      cout << "Headnode nextPtr  : " << testList2.headNodePtr->nextPtr << endl;
+      cout << "Bodynode context  : " << testList2.headNodePtr->nextPtr->prevContext << endl;
+      cout << "Bodynode context  : " << testList2.headNodePtr->nextPtr->postContext << endl;
+      cout << "Bodynode nextPtr  : " << testList2.headNodePtr->nextPtr->nextPtr << endl;
+      // toString() tests
+      testList2.append("to be or not to", "that is the question quack");
+      cout << "Printing toString()..." << endl;
+      cout << testList2.toString(11) << endl;
+      // getMaxPrevContextLength() test
+      cout << "Maximum prev context length: " << testList2.getMaxPrevContextLength() << endl;
+      cout << endl;
+   }
+
+   // Test case 08
 
 
 // X-------------------------X
@@ -277,9 +357,6 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // X-------------------------X
 
 
-   // Instantiate the puzzle object
-
-   
 
 //   stopwordBST stopwordList;
 //   cout << stopwordList.toString();
