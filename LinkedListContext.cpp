@@ -24,15 +24,13 @@ using namespace std;
 // |                      |
 // X----------------------X
 
-string keyword;
+NodeContext* currPtr;
 
 NodeContext* headNodePtr;
 
-NodeContext* currPtr;
+string keyword;
 
 int longestPrev;
-
-string contextWords[11];
 
 
 
@@ -161,4 +159,51 @@ string LinkedListContext::getPrevContext(NodeContext* currNodePtr) {
 // #getPostContext() - Returns the post context of the current node
 string LinkedListContext::getPostContext(NodeContext* currNodePtr) {
       return(currNodePtr->postContext);
+}
+
+
+
+// X--------------------------X
+// |                          |
+// |    OPERATOR OVERLOADS    |
+// |                          |
+// X--------------------------X
+
+// #operator< - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
+bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const {
+   if (this->keyword < someLinkedList.keyword) {
+      return(true);
+   }
+   else {
+      return(false);
+   }
+}
+
+// #operator> - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
+bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const {
+   if (this->keyword > someLinkedList.keyword) {
+      return(true);
+   }
+   else {
+      return(false);
+   }
+}
+
+// #operator== - Custom behavior for the equality operator for this (RHarg) and another LinkedListContext (LHarg)
+bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const {
+   if (this->keyword == someLinkedList.keyword) {
+      return(true);
+   }
+   else {
+      return(false);
+   }
+}
+
+// #operator<< - Custom behavior for the stream insertion operator for this (RHarg) and another LinkedListContext (LHarg)
+ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList) {
+   string thisLinkedList = "";
+   // <Implement all string appending here>
+   thisLinkedList += someLinkedList.toString(15); // TODO: Replace 15 with maxPrevContext
+   coutStream << thisLinkedList;
+   return coutStream;
 }
