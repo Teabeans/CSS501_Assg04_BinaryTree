@@ -1,3 +1,8 @@
+// TODO: To get BSTConcordance.cpp working:
+// 1) Add == comparison
+// 2) Add < comparison
+// 3) Add String conversion
+
 // X--------------------------X
 // |                          |
 // |    INCLUDE STATEMENTS    |
@@ -10,13 +15,13 @@
 #include <string>
 #include <fstream>
 
-#include "LinkedListContext.h"
 #include "NodeContext.cpp"
 
 using namespace std;
 
-//class LinkedListContext {
-//private:
+// This is the data field of a BSTConcordance node
+class LinkedListContext {
+private:
 
 // X----------------------X
 // |                      |
@@ -24,15 +29,7 @@ using namespace std;
 // |                      |
 // X----------------------X
 
-NodeContext* currPtr;
-
-NodeContext* headNodePtr;
-
-string keyword;
-
-int longestPrev;
-
-
+// TODO: Populate with fields after this is confirmed to work.
 
 // X-----------------------X
 // |                       |
@@ -40,23 +37,7 @@ int longestPrev;
 // |                       |
 // X-----------------------X
 
-// #reset() - Sets the current node pointer to the head node
-void LinkedListContext::reset() {
-   currPtr = headNodePtr; // TODO - Confirm this assignment works
-}
-
-// #isLastNode() - Reports whether the currPtr points to the last body node.
-bool LinkedListContext::isLastNode() {
-   // If the nextPtr is off the end of the linked list...
-   if (currPtr->nextPtr == nullptr) {
-      // This is the last node
-      return(true);
-   }
-   // Otherwise, it isn't.
-   return(false);
-}
-
-
+public: // TODO: Divide private and public fields/methods appropriately after testing
 
 // X---------------------X
 // |                     |
@@ -64,7 +45,14 @@ bool LinkedListContext::isLastNode() {
 // |                     |
 // X---------------------X
 
-// None
+
+NodeContext* currPtr;
+
+NodeContext* headNodePtr;
+
+string keyword; // Inherited from the BSTConcordance node
+
+int longestPrev;
 
 
 
@@ -74,47 +62,21 @@ bool LinkedListContext::isLastNode() {
 // |                      |
 // X----------------------X
 
-// #advance() - If currPtr is not the last node, moves currPtr forward one body node per call.
-void LinkedListContext::advance() {
-   if (isLastNode() == false) {
-      currPtr = currPtr->nextPtr;
-   }
-   else {
-      cout << "Error: Cannot advance. This is the last node." << endl;
-   }
-}
+// #advance() - If currPtr is not the last node, moves currPtr forward one body node per call
+void advance();
 
-// #append(string, string) - Adds a new node to the Linked List using the provided contexts and updates the maximum prev context length
-void LinkedListContext::append(string prevContext, string postContext){
-   this->reset();
-   // Move to the end of the linked list
-   while (!this->isLastNode()) {
-      this->advance();
-   } // currPtr now points at the last node
-   // Append a new node with the provided contexts
-   currPtr->nextPtr = new NodeContext(prevContext, postContext);
-   // Check the length and remember the longer one
-   if (prevContext.length() > this->longestPrev) {
-      longestPrev = prevContext.length();
-   }
-} // End append
+// #append(string, string) - Adds a new node to the Linked List using the provided contexts
+void append(string prevContext, string postContext);
+
+// #isLastNode() - Reports whether the currPtr points to the last body node.
+bool isLastNode();
+
+
+// #reset() - Sets the currPtr back to the head node
+void reset();
 
 // #toString() - Outputs the entire linked list as a string
-string LinkedListContext::toString(int prevLength) {
-   string retString;
-   // Starting at the first node...
-   this->reset();
-   // Append the context, keyword, and context to the return string
-   retString = retString + currPtr->prevContext + " " + keyword + " " + currPtr->postContext + "\n";
-   // And while we haven't run off the end of the list...
-   while (!this->isLastNode()) {
-      // Move forward one node
-      this->advance();
-      // And repeat
-      retString = retString + currPtr->prevContext + " " + keyword + " " + currPtr->postContext + "\n";
-   }
-   return(retString);
-}
+string toString(int prevLength);
 
 
 
@@ -124,18 +86,11 @@ string LinkedListContext::toString(int prevLength) {
 // |                                |
 // X--------------------------------X
 
-// Default constructor - Note, should never be called
-LinkedListContext::LinkedListContext() {
-   currPtr = nullptr;
-}
+// Default constructor
+LinkedListContext();
 
-// #LinkedListContext(string, string, string) - Makes a context linked list with a keyword and head node
-LinkedListContext::LinkedListContext(string someKeyword, string prevContext, string postContext) {
-   keyword = someKeyword;
-   headNodePtr = new NodeContext(prevContext, postContext);
-   currPtr = headNodePtr;
-   longestPrev = prevContext.length();
-}
+// Constructor for a head node's keyword and context
+LinkedListContext(string someKeyword, string prevContext, string postContext);
 
 
 
@@ -145,21 +100,11 @@ LinkedListContext::LinkedListContext(string someKeyword, string prevContext, str
 // |                         |
 // X-------------------------X
 
-// #getMaxPrevContextLength() - Returns the maximum context length in this linked list
-int LinkedListContext::getMaxPrevContextLength() {
-   // Iterate over the linked list and return the highest number
-   return(longestPrev);
-}
+int getMaxPrevContextLength();
 
-// #getPrevContext() - Returns the previous context of the current node
-string LinkedListContext::getPrevContext(NodeContext* currNodePtr) {
-   return(currNodePtr->prevContext);
-}
+string getPrevContext(NodeContext* currNodePtr);
 
-// #getPostContext() - Returns the post context of the current node
-string LinkedListContext::getPostContext(NodeContext* currNodePtr) {
-      return(currNodePtr->postContext);
-}
+string getPostContext(NodeContext* currNodePtr);
 
 
 
@@ -169,41 +114,16 @@ string LinkedListContext::getPostContext(NodeContext* currNodePtr) {
 // |                          |
 // X--------------------------X
 
-// #operator< - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
-bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const {
-   if (this->keyword < someLinkedList.keyword) {
-      return(true);
-   }
-   else {
-      return(false);
-   }
-}
+// #operator< - Custom behavior for the less-than operator
+bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const;
 
-// #operator> - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
-bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const {
-   if (this->keyword > someLinkedList.keyword) {
-      return(true);
-   }
-   else {
-      return(false);
-   }
-}
+// #operator> - Custom behavior for the less-than operator
+bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const;
 
-// #operator== - Custom behavior for the equality operator for this (RHarg) and another LinkedListContext (LHarg)
-bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const {
-   if (this->keyword == someLinkedList.keyword) {
-      return(true);
-   }
-   else {
-      return(false);
-   }
-}
+// #operator== - Custom behavior for the equality operator
+bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const;
 
-// #operator<< - Custom behavior for the stream insertion operator for this (RHarg) and another LinkedListContext (LHarg)
-ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList) {
-   string thisLinkedList = "";
-   // <Implement all string appending here>
-   thisLinkedList += someLinkedList.toString(15); // TODO: Replace 15 with maxPrevContext
-   coutStream << thisLinkedList;
-   return coutStream;
-}
+friend ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList);
+}; // Closing class LinkedListContext
+
+   
