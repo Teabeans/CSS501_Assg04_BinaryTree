@@ -103,7 +103,6 @@ bool BSTString::traversePreOrder(NodeString* thisNode) {
    return(true);
 }
 
-
 // #traverseInOrder()
 bool BSTString::traverseInOrder() {
    cout << "In-Order  : ";
