@@ -163,8 +163,13 @@
 #include "NodeString.cpp"
 #include "LinkedListContext.h"
 #include "NodeContext.cpp"
+#include "NodeConcordance.cpp"
+#include "BSTConcordance.h"
+#include "NodeGeneric.cpp"
+#include "BSTGeneric.cpp"
+#include "ReaderCorpus.h"
 
-// Header for the Puzzle class
+// Header for the StopwordBST
 // #include "stopwordBST.h"
 
 // Header for the Puzzle class
@@ -194,22 +199,22 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // X-------------------------X
 
    // BSTString test
-   bool unitTest00 = 1;
+   bool unitTest00 = 0;
 
    // Command line argument reception test
    bool unitTest01 = 1;
 
    // File load test and tree build
-   bool unitTest02 = 1;
+   bool unitTest02 = 0;
 
    // toString() test
-   bool unitTest03 = 1;
+   bool unitTest03 = 0;
 
    // find() test
-   bool unitTest04 = 1;
+   bool unitTest04 = 0;
 
    // setDelete() test
-   bool unitTest05 = 1;
+   bool unitTest05 = 0;
 
    // Context node test
    bool unitTest06 = 1;
@@ -217,13 +222,13 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
    // Linked List of contexts test (data field of a ConcordanceBST)
    bool unitTest07 = 1;
 
-   bool unitTest08 = 0;
+   bool unitTest08 = 1;
 
-   bool unitTest09 = 0;
+   bool unitTest09 = 1;
 
-   bool unitTest10 = 0;
+   bool unitTest10 = 1;
 
-   bool unitTest11 = 0;
+   bool unitTest11 = 1;
 
    bool unitTest12 = 0;
 
@@ -347,7 +352,91 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << endl;
    }
 
-   // Test case 08
+   // Test case 08: BST Concordances instantiation test
+   if (unitTest08 == true) {
+      cout << "UnitTest08: ConcordanceBST instantiation test" << endl;
+      BSTConcordance testConcordance;
+      cout << testConcordance.rootPtr;
+      cout << endl << endl;
+   }
+
+   // Test case 09: Generic node instantiation and pointer assignment test
+   if (unitTest09 == true) {
+      cout << "UnitTest09: NodeGeneric instantiation test" << endl;
+
+      // Generic node of type int
+      NodeGeneric<int> TempNodeInt;
+      NodeGeneric<int>* TempNodeIntPtr;
+      TempNodeIntPtr = &TempNodeInt;
+      TempNodeIntPtr->nodeData = 12345;
+      int outputInt = TempNodeIntPtr->nodeData;
+      cout << "NodeGeneric<int> value ('12345' expected): " << outputInt << endl;
+
+      // Generic node of type string
+      NodeGeneric<string> TempNodeString;
+      NodeGeneric<string>* TempNodeStringPtr;
+      TempNodeStringPtr = &TempNodeString;
+      TempNodeStringPtr->nodeData = "ABCDE";
+      string outputString = TempNodeStringPtr->nodeData;
+      cout << "NodeGeneric<string> value ('ABCDE' expected): " << outputString << endl;
+
+      // Generic node of type LinkedListContext
+      NodeGeneric<LinkedListContext> TempNodeLLC;
+      NodeGeneric<LinkedListContext>* TempNodeLLCPtr;
+      TempNodeLLCPtr = &TempNodeLLC;
+      TempNodeLLCPtr->nodeData = LinkedListContext("this", "is", "sparta");
+      // TempNodeLLC.nodeData.append("this", "the beginning"); // Test the append() function of the LinkedListContext
+      LinkedListContext outputLLC = TempNodeLLCPtr->nodeData;
+      cout << "NodeGeneric<string> value ('this is sparta' expected): " << outputLLC << endl;
+
+      cout << endl;
+   }
+
+   // Test case 10: Generic tree instantiation
+   if (unitTest10 == true) {
+      cout << "UnitTest10: GenericTree instantiation test" << endl;
+      BSTGeneric<int> TempTreeInt;
+      cout << endl;
+   }
+
+   // Test case 11: Corpus reader tests
+   if (unitTest11 == true) {
+      cout << "UnitTest11: Corpus Reader instantiation test" << endl;
+      // Instantiation
+      ReaderCorpus testReader;
+      cout << "Context Words: " << testReader.getContextWords() << endl;
+      cout << "PrevContext: " << testReader.getPrevContext() << endl;
+      cout << "PostContext: " << testReader.getPostContext() << endl;
+      // File load test from arg
+      testReader.loadFile(argv[1]);
+      // Advance() test
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      testReader.advance();
+      cout << "Context Words: " << testReader.getContextWords() << endl;
+      cout << "PrevContext: " << testReader.getPrevContext() << endl;
+      cout << "CurrWord: " << testReader.getCurrWord() << endl;
+      cout << "PostContext: " << testReader.getPostContext() << endl;
+      // End-of-file test
+      cout << "End-Of-File test" << endl;
+      for (int i = 0 ; i < 40 ; i++ ) {
+         testReader.advance();
+         cout << "Context Words: " << testReader.getContextWords() << endl;
+      }
+
+
+
+
+      cout << endl;
+   }
 
 
 // X-------------------------X
