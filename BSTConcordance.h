@@ -20,15 +20,17 @@ class BSTConcordance {
 
 private:
 
+public: // TODO - Relocate to public region after function is guaranteed
+
 // X----------------------X
 // |                      |
 // |    PRIVATE FIELDS    |
 // |                      |
 // X----------------------X
 
-string contextWords[11];
+string someField;
 
-string BSTtreeData;
+string TreeData;
 
 NodeConcordance* rootPtr;
 
@@ -61,8 +63,6 @@ bool traversePostOrder(NodeConcordance* nodePtr);
 void visit(NodeConcordance* thisNodePtr);
 
 
-
-public:
 
 // X---------------------X
 // |                     |
