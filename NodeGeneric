@@ -1,0 +1,23 @@
+#pragma once
+using namespace std;
+
+template<class typeT>
+struct NodeGeneric {
+   typeT nodeData;
+   bool isDeleted;
+   NodeGeneric<typeT>* leftPtr;
+   NodeGeneric<typeT>* rightPtr;
+
+   NodeGeneric() {
+      isDeleted = 1;
+      leftPtr = nullptr;
+      rightPtr = nullptr;
+   }
+
+   NodeGeneric(typeT someData) {
+      nodeData = someData;
+      isDeleted = 0;
+      leftPtr = nullptr;
+      rightPtr = nullptr;
+   }
+};
