@@ -174,11 +174,6 @@ string LinkedListContext::getPostContext(NodeContext* currNodePtr) const {
 // |                          |
 // X--------------------------X
 
-// #operator<< - 
-ostream& operator<< (ostream& coutStream, LinkedListContext& someNode){
-
-}
-
 // #operator< - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
 bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const {
    if (this->keyword < someLinkedList.keyword) {
