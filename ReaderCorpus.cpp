@@ -141,7 +141,7 @@ bool ReaderCorpus::advance() {
       transform(nextWord.begin(), nextWord.end(), nextWord.begin(), ::tolower);
       // Check to see if valid chars are in the word
       bool validChars = false;
-      for (int i = 0 ; i < nextWord.length() ; i++) {
+      for (unsigned int i = 0 ; i < nextWord.length() ; i++) {
          if (nextWord[i] > 'a' && nextWord[i] < 'z') {
             validChars = true;
          }
@@ -210,7 +210,7 @@ LinkedListContext ReaderCorpus::makeLinkedListContext() {
 
 // #ReaderCorpus() - Default constructor
 ReaderCorpus::ReaderCorpus() {
-   cout << "ReaderCorpus() default constructor called" << endl; // DEBUG
+   // cout << "ReaderCorpus() default constructor called" << endl; // DEBUG
    prevContext = "Nothing to see here!";
    currWord = "De nada";
    postContext = "Nor here!";
