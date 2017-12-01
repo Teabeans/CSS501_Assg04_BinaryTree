@@ -194,10 +194,7 @@ using namespace std;
 // |                      |
 // X----------------------X
 
-// TODO: Variable description
-// #someVarName - Variable description
-// Invariant information:
-// <T> someVariable;
+// Do not redeclare in the .cpp file.
 
 
 
@@ -243,10 +240,7 @@ using namespace std;
 // |                     |
 // X---------------------X
 
-// TODO: Variable description
-// #someVarName - Variable description
-// Invariant information:
-// <T> someVariable;
+// Do not redeclare in the .cpp file.
 
 
 
