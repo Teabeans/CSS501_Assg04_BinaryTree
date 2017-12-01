@@ -25,11 +25,12 @@ using namespace std;
 // |                      |
 // X----------------------X
 
-string contextWords[11];
+// Do not need to reinitialize variables in the .cpp
+//string BSTConcordance::contextWords[11];
 
-string BSTtreeData = "";
+//string BSTConcordance::TreeData = "";
 
-NodeConcordance* rootPtr = NULL;
+//NodeConcordance* BSTConcordance::rootPtr;
 
 
 
@@ -300,6 +301,10 @@ NodeConcordance* BSTConcordance::retrieve(LinkedListContext someValue) {
 // #BSTConcordance() - Default constructor
 BSTConcordance::BSTConcordance() {
    // Make a node<string> holding the word "Mulberry"
+   //string BSTConcordance::contextWords[11];
+   //string BSTConcordance::TreeData = "";
+   //NodeConcordance* BSTConcordance::rootPtr;
+
    rootPtr = new NodeConcordance(LinkedListContext("mulberry","",""));
    cout << rootPtr->nodeData; // DEBUG
 }
@@ -356,11 +361,11 @@ LinkedListContext& BSTConcordance::getRootValue() {
 
 // #getValue() - 
 string BSTConcordance::getValue() {
-   return BSTtreeData;
+   return TreeData;
 }
 
 // #setValue() - 
 void BSTConcordance::setValue( string someValue ) {
-   BSTtreeData = someValue;
+   TreeData = someValue;
 
 }
