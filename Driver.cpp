@@ -198,6 +198,9 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // |                         |
 // X-------------------------X
 
+   // Assignment controller
+   bool assignmentSwitch = 1;
+
    // BSTString test
    bool unitTest00 = 0;
 
@@ -222,12 +225,16 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
    // Linked List of contexts test (data field of a ConcordanceBST)
    bool unitTest07 = 1;
 
+   // BST Concordances instantiation test
    bool unitTest08 = 1;
 
+   // Generic node instantiation and pointer assignment test
    bool unitTest09 = 1;
 
+   // Generic tree instantiation
    bool unitTest10 = 1;
 
+   // Corpus reader tests
    bool unitTest11 = 1;
 
    bool unitTest12 = 0;
@@ -402,13 +409,16 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
    // Test case 11: Corpus reader tests
    if (unitTest11 == true) {
       cout << "UnitTest11: Corpus Reader instantiation test" << endl;
-      // Instantiation
+
+      // Instantiation test
       ReaderCorpus testReader;
       cout << "Context Words: " << testReader.getContextWords() << endl;
       cout << "PrevContext: " << testReader.getPrevContext() << endl;
       cout << "PostContext: " << testReader.getPostContext() << endl;
-      // File load test from arg
+
+      // File load from argv[1] test
       testReader.loadFile(argv[1]);
+
       // Advance() test
       testReader.advance();
       testReader.advance();
@@ -425,16 +435,18 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << "PrevContext: " << testReader.getPrevContext() << endl;
       cout << "CurrWord: " << testReader.getCurrWord() << endl;
       cout << "PostContext: " << testReader.getPostContext() << endl;
+
+      // Linked list creation test
+      cout << "LinkedList creation test" << endl;
+      LinkedListContext testList = testReader.makeLinkedListContext();
+      cout << testList.toString(10) << endl;
+
       // End-of-file test
       cout << "End-Of-File test" << endl;
       for (int i = 0 ; i < 40 ; i++ ) {
          testReader.advance();
          cout << "Context Words: " << testReader.getContextWords() << endl;
       }
-
-
-
-
       cout << endl;
    }
 
@@ -444,7 +456,30 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // |    ASSIGNMENT DRIVER    |
 // |                         |
 // X-------------------------X
+   if (assignmentSwitch == true) {
+      cout << "Running the assignment..." << endl;
 
+   // Make a stoplistBST
+      BSTGeneric<string> stopListBST("stopwords.txt");
+
+      stopListBST.printout(); // DEBUG
+
+   // Make a concordanceBST
+      LinkedListContext constructoPresto;
+      BSTGeneric<LinkedListContext> concordanceBST(constructoPresto, 0);
+
+      concordanceBST.printout();
+
+   // Make a corpus reader
+
+   // Loop the reader, sending keywords to the concordanceBST
+
+
+
+
+   
+   
+   }
 
 
 //   stopwordBST stopwordList;
