@@ -9,9 +9,10 @@ struct NodeContext {
    int lengthOfPrevContext;
 
    NodeContext() {
-      prevContext = "Foo Bar Baz";
-      postContext = "Zab Rab Oof";
+      prevContext = "Default NodeContext()";
+      postContext = "For Test Purpose Only";
       nextPtr = nullptr;
+      lengthOfPrevContext = 0;
    }
 
    NodeContext(string wordsBefore, string wordsAfter) {
