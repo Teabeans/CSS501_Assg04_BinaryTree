@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
+// #include <fstream>
 
 #include "LinkedListContext.h"
 #include "NodeContext.cpp"
@@ -23,6 +23,10 @@ using namespace std;
 // |    PRIVATE FIELDS    |
 // |                      |
 // X----------------------X
+
+// #formatLength - Variable that informs the output formatting
+int LinkedListContext::formatLength;
+int LinkedListContext::keywordFormatLength;
 
 // Do not reinitialize in .cpp file
 
@@ -66,8 +70,6 @@ bool LinkedListContext::isLastNode() {
 // |                     |
 // X---------------------X
 
-// None
-
 
 
 // X----------------------X
@@ -76,7 +78,10 @@ bool LinkedListContext::isLastNode() {
 // |                      |
 // X----------------------X
 
-// #advance() - If currPtr is not the last node, moves currPtr forward one body node per call.
+// X------------------X
+// |    #advance()    |
+// X------------------X
+// If currPtr is not the last node, moves currPtr forward one body node per call.
 void LinkedListContext::advance() {
    if (isLastNode() == false) {
       currPtr = currPtr->nextPtr;
@@ -86,7 +91,10 @@ void LinkedListContext::advance() {
    }
 }
 
-// #append(string, string) - Adds a new node to the Linked List using the provided contexts and updates the maximum prev context length
+// X-------------------------------X
+// |    #append(string, string)    |
+// X-------------------------------X
+// Adds a new node to the Linked List using the provided contexts and updates the maximum prev context length
 void LinkedListContext::append(string prevContext, string postContext){
    this->reset();
    // Move to the end of the linked list
@@ -95,25 +103,54 @@ void LinkedListContext::append(string prevContext, string postContext){
    } // currPtr now points at the last node
    // Append a new node with the provided contexts
    currPtr->nextPtr = new NodeContext(prevContext, postContext);
-   // Check the length and remember the longer one
-   if (prevContext.length() > this->longestPrev) {
-      longestPrev = prevContext.length();
+   // Set an updated formatLength
+   if (prevContext.length() > formatLength) {
+      formatLength = prevContext.length();
    }
 } // End append
 
-// #toString() - Outputs the entire linked list as a string
-string LinkedListContext::toString(int prevLength) {
-   string retString;
+// X-------------------X
+// |    #toString()    |
+// X-------------------X
+// Outputs the entire linked list as a string
+string LinkedListContext::toString() {
+   // cout << "LLC toString() called! formatLength: " << formatLength << endl; // DEBUG
+   // #reString - The return string
+   string retString = "";
+   // #gap - Gap between previous context, keyword, and post context
+   string gap = "  ";
+   // #pad - Number of spaces needed to pad out the previous context
+   string pad = "";
+   // #keypad - Number of spaces needed to pad out the previous context
+   string keypad = "";
+
    // Starting at the first node...
    this->reset();
-   // Append the context, keyword, and context to the return string
-   retString = retString + currPtr->prevContext + " " + keyword + " " + currPtr->postContext + "\n";
+   // Determine the pad width
+   for (int i = 0 ; i < (formatLength - currPtr->lengthOfPrevContext) ; i++) {
+      pad = pad + " ";
+   }
+   // determine the keypad width (only needs to be done once per LinkedListContext, since all keywords should be the same
+   for (int i = 0 ; i < (keywordFormatLength - this->keyword.length()) ; i++) {
+      keypad = keypad + " ";
+   }
+
+   // Append the pad, context, gap, keyword, keyword gap, gap, context, and a line break to the return string
+   retString = retString+ pad + currPtr->prevContext + gap + keyword + keypad + gap + currPtr->postContext + "\n";
+
    // And while we haven't run off the end of the list...
    while (!this->isLastNode()) {
       // Move forward one node
       this->advance();
       // And repeat
-      retString = retString + currPtr->prevContext + " " + keyword + " " + currPtr->postContext + "\n";
+      // Reset the pads
+      pad = "";
+      // Redetermine the pad width
+      for (int i = 0 ; i < (LinkedListContext::formatLength - currPtr->lengthOfPrevContext) ; i++) {
+         pad = pad + " ";
+      }
+      // Append the pad, context, gap, keyword, keywordgap, gap, context, and a line break to the return string
+      retString = retString + pad + currPtr->prevContext + gap + keyword + keypad + gap + currPtr->postContext + "\n";
    }
    return(retString);
 }
@@ -131,15 +168,20 @@ LinkedListContext::LinkedListContext() {
    keyword = "Linked List Context, Default Constructor, null value.";
    currPtr = nullptr;
    headNodePtr = new NodeContext();
-   longestPrev = 0;
 }
 
 // #LinkedListContext(string, string, string) - Makes a context linked list with a keyword and head node
 LinkedListContext::LinkedListContext(string prevContext, string someKeyword, string postContext) {
    keyword = someKeyword;
+   // Update the maximum observed keyword length
+   if (keyword.length() > keywordFormatLength) {
+      keywordFormatLength = keyword.length();
+   }
    headNodePtr = new NodeContext(prevContext, postContext);
    currPtr = headNodePtr;
-   longestPrev = prevContext.length();
+   if (headNodePtr->lengthOfPrevContext > LinkedListContext::formatLength) {
+      LinkedListContext::formatLength = headNodePtr->lengthOfPrevContext;
+   } // Ensures that the formatLength will be equal to the longest observed prevContext length
 }
 
 
@@ -149,12 +191,6 @@ LinkedListContext::LinkedListContext(string prevContext, string someKeyword, str
 // |    GETTERS / SETTERS    |
 // |                         |
 // X-------------------------X
-
-// #getMaxPrevContextLength() - Returns the maximum context length in this linked list
-int LinkedListContext::getMaxPrevContextLength() {
-   // Iterate over the linked list and return the highest number
-   return(longestPrev);
-}
 
 // #getPrevContext() - Returns the previous context of the current node
 string LinkedListContext::getPrevContext(NodeContext* currNodePtr) const {
@@ -211,7 +247,7 @@ bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) cons
 ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList) {
    string thisLinkedList = "";
    // <Implement all string appending here>
-   thisLinkedList += someLinkedList.toString(15); // TODO: Replace 15 with maxPrevContext
+   thisLinkedList += someLinkedList.toString();
    coutStream << thisLinkedList;
    return coutStream;
 }
