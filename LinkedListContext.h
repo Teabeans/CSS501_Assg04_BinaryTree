@@ -31,6 +31,7 @@ private:
 
 // TODO: Populate with fields after this is confirmed to work.
 
+
 // X-----------------------X
 // |                       |
 // |    PRIVATE METHODS    |
@@ -45,14 +46,15 @@ public: // TODO: Divide private and public fields/methods appropriately after te
 // |                     |
 // X---------------------X
 
+static int formatLength;
+static int keywordFormatLength;
+
 
 NodeContext* currPtr;
 
 NodeContext* headNodePtr;
 
 string keyword; // Inherited from the BSTConcordance node
-
-unsigned int longestPrev;
 
 
 
@@ -76,7 +78,7 @@ bool isLastNode();
 void reset();
 
 // #toString() - Outputs the entire linked list as a string
-string toString(int prevLength);
+string toString();
 
 
 
@@ -100,12 +102,9 @@ LinkedListContext(string someKeyword, string prevContext, string postContext);
 // |                         |
 // X-------------------------X
 
-int getMaxPrevContextLength();
-
 string getPrevContext(NodeContext* currNodePtr) const;
 
 string getPostContext(NodeContext* currNodePtr) const;
-
 
 
 // X--------------------------X
@@ -113,11 +112,6 @@ string getPostContext(NodeContext* currNodePtr) const;
 // |    OPERATOR OVERLOADS    |
 // |                          |
 // X--------------------------X
-
-
-
-
-bool LinkedListContext::operator<<(const LinkedListContext& someLinkedList) const;
 
 // #operator< - Custom behavior for the less-than operator
 bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const;
