@@ -194,7 +194,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // X-------------------------X
 
    // Assignment controller
-   bool assignmentSwitch = 0;
+   bool assignmentSwitch = 1;
 
    // BSTString test
    bool unitTest00 = 0;
@@ -262,7 +262,6 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << "Root node data: " << testObj.getRootValue() << endl;
       cout << endl;
    }
-*/
 
    // Test case 01: Command line argument reception test
    if (unitTest01 == true) {
@@ -274,7 +273,6 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << endl;
    }
 
-/*
    // Test case 02: File load test and tree build test
    if (unitTest02 == true) {
       cout << "UnitTest02: File load test (stopwords)" << endl;
@@ -348,6 +346,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << "Bodynode context  : " << testList2.headNodePtr->nextPtr->prevContext << endl;
       cout << "Bodynode context  : " << testList2.headNodePtr->nextPtr->postContext << endl;
       cout << "Bodynode nextPtr  : " << testList2.headNodePtr->nextPtr->nextPtr << endl;
+
       // toString() tests
       testList2.append("to be or not to", "that is the question quack");
       cout << "Printing toString() short..." << endl;
@@ -361,6 +360,12 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << "Printing toString() long..." << endl;
       cout << testList1.toString();
       cout << testList2.toString();
+
+      // Linked List assignment (amalgamation) test
+      cout << "Combining lists..." << endl;
+      testList1 = testList2;
+      cout << testList1.toString();
+      cout << endl;
    }
 
 /*
@@ -452,7 +457,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // |    ASSIGNMENT DRIVER    |
 // |                         |
 // X-------------------------X
-   if (assignmentSwitch == true) {
+   if (assignmentSwitch == false) {
       cout << "Running the assignment..." << endl;
 
    // Make a stoplistBST
@@ -466,7 +471,9 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       theScribe.loadFile(argv[1]);
       // Prime the reader
       theScribe.prime();
+
       // Find the first valid keyword
+
       // While the Stoplist reports that the current word can be found...
       while (stopListBST.find(theScribe.getCurrWord())) {
          // Move the corpus reader up a word
