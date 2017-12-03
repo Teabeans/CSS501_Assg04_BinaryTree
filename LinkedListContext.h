@@ -94,7 +94,8 @@ LinkedListContext();
 // Constructor for a head node's keyword and context
 LinkedListContext(string someKeyword, string prevContext, string postContext);
 
-
+// #~LinkedListContext() - Destructor for a LinkedListContext
+~LinkedListContext();
 
 // X-------------------------X
 // |                         |
@@ -102,9 +103,9 @@ LinkedListContext(string someKeyword, string prevContext, string postContext);
 // |                         |
 // X-------------------------X
 
-string getPrevContext(NodeContext* currNodePtr) const;
+string getPrevContext(const NodeContext* currNodePtr) const;
 
-string getPostContext(NodeContext* currNodePtr) const;
+string getPostContext(const NodeContext* currNodePtr) const;
 
 
 // X--------------------------X
@@ -121,6 +122,9 @@ bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const
 
 // #operator== - Custom behavior for the equality operator
 bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const;
+
+// #operator= - Custom behavior for the assignment operator
+LinkedListContext& operator=(LinkedListContext& someLinkedList);
 
 // #operator<< - 
 friend ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList);
