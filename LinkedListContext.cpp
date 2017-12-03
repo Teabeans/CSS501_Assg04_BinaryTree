@@ -184,6 +184,33 @@ LinkedListContext::LinkedListContext(string prevContext, string someKeyword, str
    } // Ensures that the formatLength will be equal to the longest observed prevContext length
 }
 
+// #~LinkedListContext() - Destructor
+LinkedListContext::~LinkedListContext() {
+   cout << "Destructo Presto!" << endl; // DEBUG
+   NodeContext* prevNodePtr = this->headNodePtr;
+   // While a body node still exists...
+   this->currPtr = this->headNodePtr;
+   while (this->headNodePtr->nextPtr != nullptr) {
+      // Advance to the end
+      while (this->currPtr->nextPtr != nullptr) {
+
+         prevNodePtr = this->currPtr;
+         this->advance();
+         //cout << "Crossing over " << this->currPtr->prevContext << ":" << this->currPtr->postContext << endl; // DEBUG
+      } // Closing while loop, curr points to last node, prev points to second to last
+      cout << "Deallocating " << this->currPtr->prevContext << ":" << this->currPtr->postContext << endl; // DEBUG
+      // And delete it
+      delete this->currPtr;
+      // And remove the previous pointer
+      prevNodePtr->nextPtr = nullptr;
+      this->currPtr = this->headNodePtr;
+      prevNodePtr = this->headNodePtr;
+   } // Body nodes are all deleted
+   cout << "Deleting Head Node: " << endl; // DEBUG
+   cout << "Deallocating " << this->headNodePtr->prevContext << ":" << this->headNodePtr->postContext << endl;
+   delete this->headNodePtr;
+}
+
 
 
 // X-------------------------X
@@ -193,12 +220,12 @@ LinkedListContext::LinkedListContext(string prevContext, string someKeyword, str
 // X-------------------------X
 
 // #getPrevContext() - Returns the previous context of the current node
-string LinkedListContext::getPrevContext(NodeContext* currNodePtr) const {
+string LinkedListContext::getPrevContext(const NodeContext* currNodePtr) const {
    return(currNodePtr->prevContext);
 }
 
 // #getPostContext() - Returns the post context of the current node
-string LinkedListContext::getPostContext(NodeContext* currNodePtr) const {
+string LinkedListContext::getPostContext(const NodeContext* currNodePtr) const {
       return(currNodePtr->postContext);
 }
 
@@ -229,6 +256,39 @@ bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const
       return(false);
    }
 }
+
+// #operator= - Custom behavior for the assignment operator. Appends the RH context list to the receiving context list
+LinkedListContext& LinkedListContext::operator=(LinkedListContext& RHarg) {
+   // Check to see if "this" and "RHarg" are the same thing
+   if (this != &RHarg) {
+      // If they aren't... target the first Linked List Node of the RH argument
+      NodeContext* targetNodePtr = RHarg.headNodePtr;
+      // And while the target isn't nullptr...
+      while(targetNodePtr != nullptr) {
+         // Append RHarg context to LHS (this)
+         this->append(RHarg.getPrevContext(targetNodePtr), RHarg.getPostContext(targetNodePtr));
+         // Advance the target
+         targetNodePtr = targetNodePtr->nextPtr;
+      } // Closing while loop - All RHarg contexts have been appended to the LHarg
+
+   }
+   return *this;
+}
+/*
+BCD& BCD::operator=(const BCD& rightHandSide) {
+   //cout << "Starting operator=" << endl;
+   //cout << "RHS: " << rightHandSide.toString() << endl;
+   if (this != &rightHandSide) {
+      this->obliterate();
+      this->deepcopy(rightHandSide);
+      // Copy relevant field states
+      this->length = rightHandSide.length;
+      this->isPositive = rightHandSide.isPositive;
+   }
+   //cout << "Operator= complete... returning *this: " << this->toString() << endl;
+   return *this;
+}
+*/
 
 // #operator== - Custom behavior for the equality operator for this (RHarg) and another LinkedListContext (LHarg)
 bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const {
