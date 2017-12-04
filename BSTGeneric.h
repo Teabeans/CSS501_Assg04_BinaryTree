@@ -27,8 +27,7 @@ public: // TODO - Relocate to public region after function is guaranteed
 // |                      |
 // X----------------------X
 
-string BSTGeneric<typeT>::contextWords[11];
-
+// #treeData - Tree name, for debug purposes
 string BSTGeneric<typeT>::treeData;
 
 NodeGeneric<typeT>* BSTGeneric<typeT>::rootPtr;
@@ -45,7 +44,7 @@ bool deletePostOrder();
 bool deletePostOrder(NodeGeneric<typeT>* nodePtr);
 
 // #insert(string) -
-bool insert(typeT someData);
+bool insert(typeT& someData); // Gets passed a LLC by reference
 
 // #obliviate() - Deletes all nodes within the BST, leaving headPtr pointing at nullptr
 void obliviate();
@@ -92,11 +91,8 @@ bool find(string someValue);
 // #printout() - Debug method to print out the nodes in pre-, in-, and post-order traversals
 void printout();
 
-// #readin(string) - Reads a file in from a file location
-void readin(string fileLocation);
-
 // #retrieve() - 
-NodeGeneric<typeT>* retrieve(typeT someData);
+// NodeGeneric<typeT>* retrieve(typeT someData);
 
 
 
@@ -113,7 +109,7 @@ BSTGeneric();
 BSTGeneric(string fileAddress);
 
 // Constructor from a node data object
-BSTGeneric(typeT someData, int signature);
+// BSTGeneric(typeT someData, int signature);
 
 // Default destructor
 ~BSTGeneric();
