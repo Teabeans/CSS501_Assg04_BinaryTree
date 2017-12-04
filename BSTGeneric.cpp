@@ -1,3 +1,153 @@
+// Tim Lum
+// twhlum@gmail.com
+// 2017.12.04
+// For the University of Washington Bothell CSS 501A
+// Autumn 2017, Graduate Certificate in Software Design & Development (GCSDD)
+//
+// File Description:
+// This file is the driver file for the Concordance Assignment. This program shall accept a list of
+// stopwords (stopwords.txt) as well as a command argument corpus location. From these bodies of data
+// it will generate a concordance in KeyWord In Context (KWIC) format.
+//
+// Package files:
+// Driver.cpp
+// BSTGeneric.h
+// BSTGeneric.cpp
+// NodeGeneric.cpp
+// ReaderCorpus.h
+// ReaderCorpus.cpp
+// LinkedListContext.h
+// LinkedListContext.cpp
+// NodeContext.cpp
+// stopwords.txt (recommended)
+// Corpus (not named, name must be passed as a command argument)
+//
+// Acknowledgements:
+// Source material from:
+// University of Washington Bothell
+// CSS 501A Data Structures And Object-Oriented Programming I
+// "Design and Coding Standards"
+// Michael Stiber
+//
+// Template author:
+// Tim Lum (twhlum@gmail.com)
+//
+// License:
+// This software is published under the GNU general license which guarantees
+// end users the freedom to run, study, share and modify the software.
+// https://www.gnu.org/licenses/gpl.html
+//
+// Code Standards:
+// I. Comment at beginning of file (above) stating (at a minimum):
+//    A. File Name
+//    B. Author Name
+//    C. Date
+//    D. Description of code purpose 
+// II. Indentation:
+//    A. 3 whitespaces ("   ")
+//    B. May vary depending on language and instructor
+// III. Variables:
+//    A. Descriptive, legible name
+//    B. Comment over any variable declaration describing:
+//       0. Its use in the algorithm
+//       1. Invariant information such as legal ranges of values
+// IV. Class Files:
+//    A. Separate *.cpp and *.h files should be used for each class.
+//    B. Files names must exactly match class names (case-sensitive)
+// V. Includes:
+//    A. Calls for content ("#include") from the Standard Template Library (STL) should be formatted as follows:
+//       0. DO type:     #include <vector>
+//       1. Do NOT type: #include <vector.h>
+//    B. You may use the directive "using namespace std;"
+//       0. ??? (?CONFIRM?)
+// VI. Classes:
+//    A. Return values:
+//       0. Do NOT return references to internal class structures.
+//       1. Do NOT return pointers to internal class structures.
+//    B. Do NOT expose any details of the internal implementation.
+// VII. Functions + Methods:
+//    A. Functions should be used for appropriate operations.
+//    B. Reference arguments should be used only when necessary.
+//    C. The (return?CONFIRM?) type of each function must be declared
+//       0. Use 'void' when necessary
+//    D. Declare as 'const' (unalterable) when no modification is made to the object state
+//       0. UML 'query' property (?CONFIRM?)
+// VIII. Function Comments:
+//    A. DO include a comment prior to each function which includes the function's:
+//       0. Purpose - Why does the function exist?
+//       1. Parameters - What fields does the function contain?
+//       2. Preconditions - What conditions must be true prior to the function call?
+//       3. Postconditions - What conditions must be true after the function call?
+//       4. Return value - What is the nature and range of the value returned by the function?
+//       5. Functions called - What other functions are called by this function?
+// IX. Loop invariants
+//    A. Each loop should be commented with 'invariant' information (?CONFIRM?)
+// X. Assertions:
+//    A. May be comments or the 'assert()' feature.
+//    B. Insert where useful to explain important features or subtle logic.
+//    C. What, exactly, is an assertion (?CONFIRM?)
+// XI. Prohibited (unless justified):
+//    A. Global variables
+//    B. "Gotos" (?CONFIRM?)
+//
+// Special instructions:
+// To install G++:
+// sudo apt install g++
+// 
+// To update Linux:
+// sudo apt-get update && sudo apt-get install
+// sudo apt-get update
+//
+// To make a new .cpp file in Linux:
+// nano <file name>.cpp
+//
+// To make a new .h file in Linux:
+// nano <file name>.h
+//
+// To make a new .txt file in Linux:
+// nano <file name>.txt
+//
+// To compile in g++:
+// g++ -std=c++11 *.cpp
+//
+// To run with test input:
+// ./a.out < TestInput.txt
+//
+// To run Valgrind:
+// Install Valgrind:
+// sudo apt install valgrind
+//
+// Run with:
+// valgrind --leak-check=full <file folder path>/<file name, usually a.out>
+// OR
+// valgrind --leak-check=full --show-leak-kinds=all <file path>/a.out
+//
+// ie.
+// valgrind --leak-check=full /home/Teabean/a.out
+// OR
+// valgrind --leak-check=full --show-leak-kinds=all /home/Teabean/a.out
+// OR
+// valgrind --leak-check=full --show-leak-kinds=all /home/Teabean/a.out < /Sudoku.txt
+//
+// To load a text file as cin input in Visual Studios:
+// 1. Go to the top menu bar => Debug => <ProjectName> Properties => Debugging => Command Arguments =>
+// 2. "< <Filepath>/<Filename>.txt" ie. "< /Sudoku.txt"
+// ie. < /Sudoku.txt
+//
+// To pass a command argument:
+// 1. Go to the top menu bar => Debug => <ProjectName> Properties => Debugging => Command Arguments =>
+// 2. Enter the file address and name
+// ie. corpus.txt
+// 3. Alter main() method signature as follows: main( int argc, char* argv[] ) {
+// 4. The variable "argv[1]" now refers to the first command argument passed
+//
+// To run in Linux with Valgrind and a command argument
+// valgrind --leak-check=full --show-leak-kinds=all /home/Teabean/a.out Sudoku.txt
+//
+// ---- BEGIN STUDENT CODE ----
+
+
+
 // X--------------------------X
 // |                          |
 // |    INCLUDE STATEMENTS    |
@@ -46,10 +196,10 @@ using namespace std;
 // #deletePostOrder() - Helper method
 template <class typeT>
 bool BSTGeneric<typeT>::deletePostOrder() {
-   cout << "deletePostOrder() called." << endl; // DEBUG
+   // cout << "deletePostOrder() called." << endl; // DEBUG
    // Check for empty tree
    if (rootPtr == nullptr) {
-      cout << "No traversal possible. This tree is empty." << endl;
+      // cout << "No traversal possible. This tree is empty." << endl;
       return (false);
    }
    // Otherwise, return the results of the recursive traversal
@@ -81,21 +231,21 @@ bool BSTGeneric<typeT>::deletePostOrder(NodeGeneric<typeT>* thisNode) {
 // 
 template <class typeT>
 bool BSTGeneric<typeT>::insert(typeT& someData) { // Receiving by reference
-   cout << "Insert() called" << endl; // DEBUG
-   cout << "NodeData: " << someData << endl; // DEBUG
+   // cout << "Insert() called" << endl; // DEBUG
+   // cout << "NodeData: " << someData << endl; // DEBUG
    NodeGeneric<typeT>* currNodePtr = rootPtr;
    NodeGeneric<typeT>* prevNodePtr = nullptr;
    // Initial case: If tree is empty, insert a new node at the root
    if (rootPtr == nullptr) {
-      cout << "BSTGen.Inserting at root!" << endl; // DEBUG
+      // cout << "BSTGen.Inserting at root!" << endl; // DEBUG
 
       // X----------------X
       // |    BREAKING    | - LLC keyword being set to "." by LLC.LLC()
       // X----------------X
 
       rootPtr = new NodeGeneric<typeT>(someData); // BUG - Should not be calling the generic node constructor...
-      cout << endl << endl << "New node created with data and assigned to BST rootPtr. \nBSTGeneric.insert() completed successfully." << endl;
-      cout << "RootPtr: " << rootPtr->nodeData << endl << endl; // DEBUG
+      // cout << endl << endl << "New node created with data and assigned to BST rootPtr. \nBSTGeneric.insert() completed successfully." << endl;
+      // cout << "RootPtr: " << rootPtr->nodeData << endl << endl; // DEBUG
       // And halt execution
       return(true);
    }
@@ -109,7 +259,7 @@ bool BSTGeneric<typeT>::insert(typeT& someData) { // Receiving by reference
             currNodePtr->isDeleted = false;
          }
          else {
-            cout << "This node already exists: " << someData << endl; // DEBUG
+            // cout << "This node already exists: " << someData << endl; // DEBUG
             return(false);
          }
       }
@@ -245,7 +395,10 @@ bool BSTGeneric<typeT>::traversePostOrder(NodeGeneric<typeT>* thisNode) {
    return(true);
 }
 
-// #visit(NodeGeneric<typeT>*) - 
+// X-----------------------X
+// |    #visit(nodePtr)    |
+// X-----------------------X
+// Visits the node indicated by sending the nodeData content to cout.
 template <class typeT>
 void BSTGeneric<typeT>::visit(NodeGeneric<typeT>* thisNodePtr) {
    // Visit the node, but only perform an action if the node is undeleted
@@ -276,7 +429,10 @@ void BSTGeneric<typeT>::visit(NodeGeneric<typeT>* thisNodePtr) {
 // |                      |
 // X----------------------X
 
-// #find(string) - Finds a node with value of string
+// X---------------------X
+// |    #find(string)    |
+// X---------------------X
+// Finds a node with value of string
 template <class typeT>
 bool BSTGeneric<typeT>::find(string someValue) {
    // If the tree is empty, do nothing
@@ -359,7 +515,7 @@ BSTGeneric<typeT>::BSTGeneric() {
    // Make a default node of typeT
    LinkedListContext defaultList(); // TODO: Remove this
    this->rootPtr = nullptr;
-   cout << "Default genericBST constructor called. RootPtr set to nullptr" << endl; // DEBUG
+   // cout << "Default genericBST constructor called. RootPtr set to nullptr" << endl; // DEBUG
 }
 
 // #BSTGeneric(string) - Constructor from file address
@@ -400,7 +556,7 @@ BSTGeneric<typeT>::BSTGeneric(typeT someData, int signature) {
 // #~BSTGeneric() - Destructor
 template <class typeT>
 BSTGeneric<typeT>::~BSTGeneric() {
-   cout << "BSTGeneric Destructor called." << endl; // DEBUG
+   // cout << "BSTGeneric Destructor called." << endl; // DEBUG
    this->obliviate();
 }
 
