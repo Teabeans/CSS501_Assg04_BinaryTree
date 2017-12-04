@@ -218,7 +218,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
    bool unitTest06 = 0;
 
    // Linked List of contexts test (data field of a ConcordanceBST)
-   bool unitTest07 = 1;
+   bool unitTest07 = 0;
 
    // BST Concordances instantiation test
    bool unitTest08 = 0;
@@ -231,14 +231,6 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 
    // Corpus reader tests
    bool unitTest11 = 0;
-
-   bool unitTest12 = 0;
-
-   bool unitTest13 = 0;
-
-   bool unitTest14 = 0;
-
-   bool unitTest15 = 0;
 
 // X--------------------X
 // |                    |
@@ -378,6 +370,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
    }
 */
 
+   /*
    // Test case 09: Generic node instantiation and pointer assignment test
    if (unitTest09 == true) {
       cout << "UnitTest09: NodeGeneric instantiation test" << endl;
@@ -450,20 +443,20 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       }
       cout << endl;
    }
-
+   */
 
 // X-------------------------X
 // |                         |
 // |    ASSIGNMENT DRIVER    |
 // |                         |
 // X-------------------------X
-   if (assignmentSwitch == false) {
+   if (assignmentSwitch == true) {
       cout << "Running the assignment..." << endl;
 
    // Make a stoplistBST
+      cout << "Generate a stopwordBST" << endl; // DEBUG
       BSTGeneric<string> stopListBST("stopwords.txt");
-
-      // stopListBST.printout(); // DEBUG
+      stopListBST.printout(); // DEBUG
 
    // Make a CorpusReader
       ReaderCorpus theScribe;
@@ -471,32 +464,42 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       theScribe.loadFile(argv[1]);
       // Prime the reader
       theScribe.prime();
-
       // Find the first valid keyword
-
       // While the Stoplist reports that the current word can be found...
       while (stopListBST.find(theScribe.getCurrWord())) {
          // Move the corpus reader up a word
+         // cout << "Avanti!" << endl; // DEBUG
          theScribe.advance();
-      } // While loop closed, we should be looking at the first non-stopword in the corpus.
+      } // While loop closed, we should be looking at the first non-stopword in the corpus. "the" expected
 
       // Output the first LinkedListContext object
-      LinkedListContext constructoPresto = theScribe.makeLinkedListContext();
+      LinkedListContext* constructoPresto;
+      constructoPresto = theScribe.makeLinkedListContext();
 
-      cout << "ConstructoPresto: " << constructoPresto.toString(); // DEBUG
+      cout << "    ConstructoPresto: " << constructoPresto->toString(); // DEBUG
 
-   // Make a concordanceBST
+      // Make a concordanceBST
       // DEBUG - not to be that is  the  question whether tis nobler in
-      BSTGeneric<LinkedListContext> concordanceBST(constructoPresto, 0);
+      cout << "    Make a concordanceBST." << endl; // DEBUG
+      BSTGeneric<LinkedListContext> concordanceBST; // Omit ()
+      concordanceBST.printout();
+      cout << "    Inserting..." << endl;
 
+      concordanceBST.insert(*constructoPresto);
+      cout << "    Insert successful." << endl;
       concordanceBST.printout();
 
-   // Make a corpus reader
+      // Advance the reader and insert
+      theScribe.advance(); // Fencepost advance
+      while (!theScribe.isFinished()) {
+         if (!stopListBST.find(theScribe.getCurrWord())) {
+            concordanceBST.insert(*theScribe.makeLinkedListContext());
+         }
+         theScribe.advance();
+      }
+      concordanceBST.printout();
 
-   // Loop the reader, sending keywords to the concordanceBST
-
-
-
+      cout << "    Stop." << endl;
 
    
    
