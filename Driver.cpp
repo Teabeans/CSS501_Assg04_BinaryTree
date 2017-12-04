@@ -13,8 +13,14 @@
 // Driver.cpp
 // BSTGeneric.h
 // BSTGeneric.cpp
-// File2.h
-// File2.cpp
+// NodeGeneric.cpp
+// ReaderCorpus.h
+// ReaderCorpus.cpp
+// LinkedListContext.h
+// LinkedListContext.cpp
+// NodeContext.cpp
+// stopwords.txt (recommended)
+// Corpus (not named, name must be passed as a command argument)
 //
 // Acknowledgements:
 // Source material from:
