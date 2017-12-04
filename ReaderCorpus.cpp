@@ -196,10 +196,19 @@ bool ReaderCorpus::loadFile(string fileAddy) {
    return(true);
 }
 
-LinkedListContext ReaderCorpus::makeLinkedListContext() {
-   LinkedListContext retList(prevContext, contextWords[5], postContext);
+LinkedListContext* ReaderCorpus::makeLinkedListContext() {
+   LinkedListContext* retList = new LinkedListContext(prevContext, contextWords[5], postContext);
    return(retList);
 }
+
+// #prime() - Advances the reader to the first valid keyword-context state.
+string ReaderCorpus::prime() {
+   while (!isPrimed()) {
+      this->advance();
+   }
+   return(contextWords[5]);
+}
+
 
 
 // X--------------------------------X
