@@ -1,3 +1,153 @@
+// Tim Lum
+// twhlum@gmail.com
+// 2017.12.04
+// For the University of Washington Bothell CSS 501A
+// Autumn 2017, Graduate Certificate in Software Design & Development (GCSDD)
+//
+// File Description:
+// This file is the driver file for the Concordance Assignment. This program shall accept a list of
+// stopwords (stopwords.txt) as well as a command argument corpus location. From these bodies of data
+// it will generate a concordance in KeyWord In Context (KWIC) format.
+//
+// Package files:
+// Driver.cpp
+// BSTGeneric.h
+// BSTGeneric.cpp
+// NodeGeneric.cpp
+// ReaderCorpus.h
+// ReaderCorpus.cpp
+// LinkedListContext.h
+// LinkedListContext.cpp
+// NodeContext.cpp
+// stopwords.txt (recommended)
+// Corpus (not named, name must be passed as a command argument)
+//
+// Acknowledgements:
+// Source material from:
+// University of Washington Bothell
+// CSS 501A Data Structures And Object-Oriented Programming I
+// "Design and Coding Standards"
+// Michael Stiber
+//
+// Template author:
+// Tim Lum (twhlum@gmail.com)
+//
+// License:
+// This software is published under the GNU general license which guarantees
+// end users the freedom to run, study, share and modify the software.
+// https://www.gnu.org/licenses/gpl.html
+//
+// Code Standards:
+// I. Comment at beginning of file (above) stating (at a minimum):
+//    A. File Name
+//    B. Author Name
+//    C. Date
+//    D. Description of code purpose 
+// II. Indentation:
+//    A. 3 whitespaces ("   ")
+//    B. May vary depending on language and instructor
+// III. Variables:
+//    A. Descriptive, legible name
+//    B. Comment over any variable declaration describing:
+//       0. Its use in the algorithm
+//       1. Invariant information such as legal ranges of values
+// IV. Class Files:
+//    A. Separate *.cpp and *.h files should be used for each class.
+//    B. Files names must exactly match class names (case-sensitive)
+// V. Includes:
+//    A. Calls for content ("#include") from the Standard Template Library (STL) should be formatted as follows:
+//       0. DO type:     #include <vector>
+//       1. Do NOT type: #include <vector.h>
+//    B. You may use the directive "using namespace std;"
+//       0. ??? (?CONFIRM?)
+// VI. Classes:
+//    A. Return values:
+//       0. Do NOT return references to internal class structures.
+//       1. Do NOT return pointers to internal class structures.
+//    B. Do NOT expose any details of the internal implementation.
+// VII. Functions + Methods:
+//    A. Functions should be used for appropriate operations.
+//    B. Reference arguments should be used only when necessary.
+//    C. The (return?CONFIRM?) type of each function must be declared
+//       0. Use 'void' when necessary
+//    D. Declare as 'const' (unalterable) when no modification is made to the object state
+//       0. UML 'query' property (?CONFIRM?)
+// VIII. Function Comments:
+//    A. DO include a comment prior to each function which includes the function's:
+//       0. Purpose - Why does the function exist?
+//       1. Parameters - What fields does the function contain?
+//       2. Preconditions - What conditions must be true prior to the function call?
+//       3. Postconditions - What conditions must be true after the function call?
+//       4. Return value - What is the nature and range of the value returned by the function?
+//       5. Functions called - What other functions are called by this function?
+// IX. Loop invariants
+//    A. Each loop should be commented with 'invariant' information (?CONFIRM?)
+// X. Assertions:
+//    A. May be comments or the 'assert()' feature.
+//    B. Insert where useful to explain important features or subtle logic.
+//    C. What, exactly, is an assertion (?CONFIRM?)
+// XI. Prohibited (unless justified):
+//    A. Global variables
+//    B. "Gotos" (?CONFIRM?)
+//
+// Special instructions:
+// To install G++:
+// sudo apt install g++
+// 
+// To update Linux:
+// sudo apt-get update && sudo apt-get install
+// sudo apt-get update
+//
+// To make a new .cpp file in Linux:
+// nano <file name>.cpp
+//
+// To make a new .h file in Linux:
+// nano <file name>.h
+//
+// To make a new .txt file in Linux:
+// nano <file name>.txt
+//
+// To compile in g++:
+// g++ -std=c++11 *.cpp
+//
+// To run with test input:
+// ./a.out < TestInput.txt
+//
+// To run Valgrind:
+// Install Valgrind:
+// sudo apt install valgrind
+//
+// Run with:
+// valgrind --leak-check=full <file folder path>/<file name, usually a.out>
+// OR
+// valgrind --leak-check=full --show-leak-kinds=all <file path>/a.out
+//
+// ie.
+// valgrind --leak-check=full /home/Teabean/a.out
+// OR
+// valgrind --leak-check=full --show-leak-kinds=all /home/Teabean/a.out
+// OR
+// valgrind --leak-check=full --show-leak-kinds=all /home/Teabean/a.out < /Sudoku.txt
+//
+// To load a text file as cin input in Visual Studios:
+// 1. Go to the top menu bar => Debug => <ProjectName> Properties => Debugging => Command Arguments =>
+// 2. "< <Filepath>/<Filename>.txt" ie. "< /Sudoku.txt"
+// ie. < /Sudoku.txt
+//
+// To pass a command argument:
+// 1. Go to the top menu bar => Debug => <ProjectName> Properties => Debugging => Command Arguments =>
+// 2. Enter the file address and name
+// ie. corpus.txt
+// 3. Alter main() method signature as follows: main( int argc, char* argv[] ) {
+// 4. The variable "argv[1]" now refers to the first command argument passed
+//
+// To run in Linux with Valgrind and a command argument
+// valgrind --leak-check=full --show-leak-kinds=all /home/Teabean/a.out Sudoku.txt
+//
+// ---- BEGIN STUDENT CODE ----
+
+
+
 // X--------------------------X
 // |                          |
 // |    INCLUDE STATEMENTS    |
@@ -59,9 +209,9 @@ void LinkedListContext::reset() {
 // #isLastNode() - Reports whether the currPtr points to the last body node.
 bool LinkedListContext::isLastNode() {
    // Test to avoid read access error, currPtr might be null, in which case nextPtr cannot be read
-   if (currPtr == nullptr) {
-      return(true);
-   }
+//   if (currPtr == nullptr) {
+//      return(true);
+//   }
    // If the nextPtr is off the end of the linked list...
    if (currPtr->nextPtr == nullptr) {
       // This is the last node
@@ -105,13 +255,13 @@ void LinkedListContext::advance() {
 // X-------------------------------X
 // Adds a new node to the Linked List using the provided contexts and updates the maximum prev context length
 void LinkedListContext::append(string prevContext, string postContext){
-   cout << "LLC.append() called." << endl;
+   // cout << "LLC.append() called." << endl; // DEBUG
    this->reset();
    if (this->headNodePtr == nullptr) {
-      cout << "No head node" << endl;
+      // cout << "No head node" << endl; // DEBUG
       this->headNodePtr = new NodeContext(prevContext, postContext);
       this->currPtr = this->headNodePtr;
-      cout << "Append completed on a blank LLC." << endl;
+      // cout << "Append completed on a blank LLC." << endl; // DEBUG
       return;
    }
    // Move to the end of the linked list
@@ -162,6 +312,7 @@ string LinkedListContext::toString() {
 
    // And while we haven't run off the end of the list...
    while (!this->isLastNode()) {
+      retString = retString + "$"; // DEBUG
       // cout << "LLC.toString() while-loop activated." << endl; // DEBUG
       // Move forward one node
       this->advance();
@@ -192,7 +343,7 @@ string LinkedListContext::toString() {
 // X---------------------------X
 // Default constructor - Called by 
 LinkedListContext::LinkedListContext() {
-   cout << "LLC.LLC() - Default constructor called." << endl; // DEBUG
+   // cout << "LLC.LLC() - Default constructor called." << endl; // DEBUG
 //   keyword = ".";
    // cout << "LLC.LLC() Keyword: " << keyword << endl; // DEBUG
    currPtr = nullptr;
@@ -301,31 +452,31 @@ bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const
 LinkedListContext& LinkedListContext::operator=(LinkedListContext& RHarg) {
    // Check to see if "this" and "RHarg" are the same thing
    if (this == &RHarg) { // Compares reference addresses
-      cout << "LLC assignment attempted on self. Returning." << endl; // DEBUG
+      // cout << "LLC assignment attempted on self. Returning." << endl; // DEBUG
       return *this; // If the same, bail.
    }
    // The two linked lists are different...
    if (this != &RHarg) {
-      cout << "This LLC keyword: " << this->keyword << endl;
-      cout << "That LLC keyword: " << RHarg.keyword << endl;
+      // cout << "This LLC keyword: " << this->keyword << endl;
+      // cout << "That LLC keyword: " << RHarg.keyword << endl;
       this->keyword = RHarg.keyword;
       // If they aren't... target the first Linked List Node of the RH argument
       NodeContext* targetNodePtr = RHarg.headNodePtr;
       // And while the target isn't nullptr...
       while(targetNodePtr != nullptr) {
-         cout << "LLC.operator= appending..." << endl;
+         // cout << "LLC.operator= appending..." << endl;
          // cout << "AppendingPrev: " << this->getPrevContext(this->headNodePtr) << endl; // BUG - Attempting to access a nullptr
          // cout << "AppendingPost: " << this->getPostContext(this->headNodePtr) << endl; // BUG - Attempting to access a nullptr
-         cout << "AppendingPrev: " << RHarg.getPrevContext(targetNodePtr) << endl;
-         cout << "AppendingPost: " << RHarg.getPostContext(targetNodePtr) << endl;
+         // cout << "AppendingPrev: " << RHarg.getPrevContext(targetNodePtr) << endl;
+         // cout << "AppendingPost: " << RHarg.getPostContext(targetNodePtr) << endl;
          // Append RHarg context to LHS (this)
          this->append(RHarg.getPrevContext(targetNodePtr), RHarg.getPostContext(targetNodePtr));
-         cout << "LLC.operator= Append() complete! Advancing target..." << endl;
+         // cout << "LLC.operator= Append() complete! Advancing target..." << endl;
          // Advance the target
          targetNodePtr = targetNodePtr->nextPtr;
       } // Closing while loop - All RHarg contexts have been appended to the LHarg
    }
-   cout << "Closing LLC.operator=()" << endl << endl;
+   // cout << "Closing LLC.operator=()" << endl << endl;
    return *this;
 }
 /*
@@ -362,7 +513,7 @@ ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList) {
    // cout << "LLC.op<<() called"; // DEBUG
    string thisLinkedList = "";
    // <Implement all string appending here>
-   thisLinkedList += someLinkedList.toString();
+   thisLinkedList = thisLinkedList + someLinkedList.toString();
    coutStream << thisLinkedList;
    // cout << "LLC.op<<() successful"; // DEBUG
    return coutStream;
