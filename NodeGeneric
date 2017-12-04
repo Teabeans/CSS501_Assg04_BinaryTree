@@ -3,19 +3,30 @@ using namespace std;
 
 template<class typeT>
 struct NodeGeneric {
-   typeT nodeData;
+   // cout << "NodeGeneric fields declared" << endl; // DEBUG
+   typeT nodeData; // LLC default constructor called
    bool isDeleted;
    NodeGeneric<typeT>* leftPtr;
    NodeGeneric<typeT>* rightPtr;
 
    NodeGeneric() {
+      cout << "NodeGeneric() constructor called" << endl;
       isDeleted = 1;
       leftPtr = nullptr;
       rightPtr = nullptr;
    }
 
-   NodeGeneric(typeT someData) {
-      nodeData = someData;
+   // #NodeGeneric(<T>) - Generic node constructor from data<T>. Assigns data to nodeData field.
+   NodeGeneric(typeT& someData) {
+      cout << "NodeGeneric(Data) constructor called" << endl; // DEBUG
+
+      // X----------------X
+      // |    BREAKING    |
+      // X----------------X
+
+      nodeData = someData; // LLC assignment operator called here, LHarg = default ("."), RHarg = received ("the"
+      cout << "Node data assigned" << endl; // DEBUG
+      cout << nodeData;
       isDeleted = 0;
       leftPtr = nullptr;
       rightPtr = nullptr;
