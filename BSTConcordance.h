@@ -10,13 +10,12 @@
 #include <fstream>
 
 // Node definition
-#include "NodeString.cpp" // For a string BST
-#include "NodeContext.cpp" // For a context linked list
-#include "NodeConcordance.cpp" // For a concordance BST
+#include "NodeGeneric.cpp" // For a generic (BST) node
 
 using namespace std;
 
-class BSTConcordance {
+template <class typeT>
+class BSTGeneric {
 
 private:
 
@@ -28,12 +27,10 @@ public: // TODO - Relocate to public region after function is guaranteed
 // |                      |
 // X----------------------X
 
-string someField;
+// #treeData - Tree name, for debug purposes
+string BSTGeneric<typeT>::treeData;
 
-string TreeData;
-
-NodeConcordance* rootPtr;
-
+NodeGeneric<typeT>* BSTGeneric<typeT>::rootPtr;
 
 
 // X-----------------------X
@@ -42,25 +39,32 @@ NodeConcordance* rootPtr;
 // |                       |
 // X-----------------------X
 
+// #deletePostOrder() -
+bool deletePostOrder();
+bool deletePostOrder(NodeGeneric<typeT>* nodePtr);
+
 // #insert(string) -
-bool insert(LinkedListContext someLinkedList);
+bool insert(typeT& someData); // Gets passed a LLC by reference
+
+// #obliviate() - Deletes all nodes within the BST, leaving headPtr pointing at nullptr
+void obliviate();
 
 // #setDelete() -
-bool setDelete(LinkedListContext someLinkedList);
+bool setDelete(typeT someData);
 
 // #traversePreOrder() - Helper method
 bool traversePreOrder();
-bool traversePreOrder(NodeConcordance* nodePtr);
+bool traversePreOrder(NodeGeneric<typeT>* nodePtr);
 
 // #traverseInOrder() - Helper method
 bool traverseInOrder();
-bool traverseInOrder(NodeConcordance* nodePtr);
+bool traverseInOrder(NodeGeneric<typeT>* nodePtr);
 
 // #traversePostOrder() - Helper method
 bool traversePostOrder();
-bool traversePostOrder(NodeConcordance* nodePtr);
+bool traversePostOrder(NodeGeneric<typeT>* nodePtr);
 
-void visit(NodeConcordance* thisNodePtr);
+void visit(NodeGeneric<typeT>* thisNodePtr);
 
 
 
@@ -87,11 +91,8 @@ bool find(string someValue);
 // #printout() - Debug method to print out the nodes in pre-, in-, and post-order traversals
 void printout();
 
-// #readin(string) - Reads a file in from a file location
-void readin(string fileLocation);
-
 // #retrieve() - 
-NodeConcordance* retrieve(LinkedListContext someValue);
+// NodeGeneric<typeT>* retrieve(typeT someData);
 
 
 
@@ -102,10 +103,16 @@ NodeConcordance* retrieve(LinkedListContext someValue);
 // X--------------------------------X
 
 // Default constructor
-BSTConcordance();
+BSTGeneric();
 
 // Constructor from file address
-BSTConcordance(string fileAddress);
+BSTGeneric(string fileAddress);
+
+// Constructor from a node data object
+// BSTGeneric(typeT someData, int signature);
+
+// Default destructor
+~BSTGeneric();
 
 
 
@@ -116,7 +123,7 @@ BSTConcordance(string fileAddress);
 // X-------------------------X
 
 // #getRootValue() - 
-LinkedListContext& getRootValue();
+typeT& getRootValue();
 
 // #getValue() - 
 string getValue();
