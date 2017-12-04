@@ -43,7 +43,6 @@ ifstream fileObj;
 // |                       |
 // X-----------------------X
 
-bool isFinished();
 
 string trimPreNoise(string aWord);
 
@@ -67,13 +66,15 @@ public:
 
 bool advance();
 
+bool isFinished();
+
 bool isPrimed();
 
 bool loadFile(string fileAddy);
 
-LinkedListContext makeLinkedListContext();
+LinkedListContext* makeLinkedListContext();
 
-
+string prime();
 
 // X--------------------------------X
 // |                                |
