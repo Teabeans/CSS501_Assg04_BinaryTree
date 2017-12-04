@@ -75,27 +75,38 @@ bool BSTGeneric<typeT>::deletePostOrder(NodeGeneric<typeT>* thisNode) {
    return(true);
 }
 
-// #insert(<typeT>) -
+// X------------------------X
+// |    #insert(<typeT>)    |
+// X------------------------X
+// 
 template <class typeT>
-bool BSTGeneric<typeT>::insert(typeT someData) {
-//   cout << "Insert() called" << endl; // DEBUG
-//   cout << "WordData: " << aWord << endl; // DEBUG
-   NodeGeneric<typeT>* curr = rootPtr;
-   NodeGeneric<typeT>* prev = nullptr;
-   // Initial case: If tree is empty, insert this node at the root
-   if (rootPtr == NULL) {
-      rootPtr = new NodeGeneric<typeT>(someData);
+bool BSTGeneric<typeT>::insert(typeT& someData) { // Receiving by reference
+   cout << "Insert() called" << endl; // DEBUG
+   cout << "NodeData: " << someData << endl; // DEBUG
+   NodeGeneric<typeT>* currNodePtr = rootPtr;
+   NodeGeneric<typeT>* prevNodePtr = nullptr;
+   // Initial case: If tree is empty, insert a new node at the root
+   if (rootPtr == nullptr) {
+      cout << "BSTGen.Inserting at root!" << endl; // DEBUG
+
+      // X----------------X
+      // |    BREAKING    | - LLC keyword being set to "." by LLC.LLC()
+      // X----------------X
+
+      rootPtr = new NodeGeneric<typeT>(someData); // BUG - Should not be calling the generic node constructor...
+      cout << endl << endl << "New node created with data and assigned to BST rootPtr. \nBSTGeneric.insert() completed successfully." << endl;
+      cout << "RootPtr: " << rootPtr->nodeData << endl << endl; // DEBUG
       // And halt execution
       return(true);
    }
    // Otherwise, while the current node pointer is not off the end of a leaf...
-   while (curr != nullptr) {
+   while (currNodePtr != nullptr) {
       // Test if the node to insert is equal, greater, or lesser
-      if (curr->nodeData == someData) {
+      if (currNodePtr->nodeData == someData) {
          // If equal, check if it's deleted
-         if (curr->isDeleted == true) {
+         if (currNodePtr->isDeleted == true) {
             // Undelete it if so
-            curr->isDeleted = false;
+            currNodePtr->isDeleted = false;
          }
          else {
             cout << "This node already exists: " << someData << endl; // DEBUG
@@ -103,26 +114,26 @@ bool BSTGeneric<typeT>::insert(typeT someData) {
          }
       }
       // Otherwise, if the insert data is less than the current node data...
-      else if (someData < curr->nodeData) {
+      else if (someData < currNodePtr->nodeData) {
          // Move left
-         prev = curr;
-         curr = curr->leftPtr;
+         prevNodePtr = currNodePtr;
+         currNodePtr = currNodePtr->leftPtr;
       }
       // Otherwise, if the insert data is greater than the current node data...
-      else if (someData > curr->nodeData) {
+      else if (someData > currNodePtr->nodeData) {
          // Move right
-         prev = curr;
-         curr = curr->rightPtr;
+         prevNodePtr = currNodePtr;
+         currNodePtr = currNodePtr->rightPtr;
       }
    } // Ending tree descent. Curr is now nullptr, Prev is the node pointing at Curr
 
    // If insert data is less than this node data, insert left
-   if (someData < prev->nodeData) {
-      prev->leftPtr = new NodeGeneric<typeT>(someData);
+   if (someData < prevNodePtr->nodeData) {
+      prevNodePtr->leftPtr = new NodeGeneric<typeT>(someData);
    }
    // Otherwise, insert right
-   else if (someData > prev->nodeData) {
-      prev->rightPtr = new NodeGeneric<typeT>(someData);
+   else if (someData > prevNodePtr->nodeData) {
+      prevNodePtr->rightPtr = new NodeGeneric<typeT>(someData);
    }
    return(true);
 }
@@ -148,7 +159,7 @@ bool BSTGeneric<typeT>::setDelete(typeT someData) {
 // #traversePreOrder() - Helper method
 template <class typeT>
 bool BSTGeneric<typeT>::traversePreOrder() {
-   cout << "Pre-Order : ";
+   cout << "Pre-Order : " << endl;
    // Check for empty tree
    if (rootPtr == nullptr) {
       cout << "No traversal possible. This tree is empty." << endl;
@@ -164,7 +175,7 @@ bool BSTGeneric<typeT>::traversePreOrder() {
 template <class typeT>
 bool BSTGeneric<typeT>::traversePreOrder(NodeGeneric<typeT>* thisNode) {
    visit(thisNode);
-   cout << " , ";
+   // cout << " , "; // DEBUG
    if (thisNode->leftPtr != nullptr) {
       traversePreOrder(thisNode->leftPtr);
    }
@@ -177,7 +188,7 @@ bool BSTGeneric<typeT>::traversePreOrder(NodeGeneric<typeT>* thisNode) {
 // #traverseInOrder() - Helper method
 template <class typeT>
 bool BSTGeneric<typeT>::traverseInOrder() {
-   cout << "In-Order  : ";
+   cout << "In-Order  : " << endl;
    // Check for empty tree
    if (rootPtr == nullptr) {
       cout << "No traversal possible. This tree is empty." << endl;
@@ -196,7 +207,7 @@ bool BSTGeneric<typeT>::traverseInOrder(NodeGeneric<typeT>* thisNode) {
       traverseInOrder(thisNode->leftPtr);
    }
    visit(thisNode);
-   cout << " , ";
+   // cout << " , "; // DEBUG
    if (thisNode->rightPtr != nullptr) {
       traverseInOrder(thisNode->rightPtr);
    }
@@ -206,7 +217,7 @@ bool BSTGeneric<typeT>::traverseInOrder(NodeGeneric<typeT>* thisNode) {
 // #traversePostOrder() - Helper method
 template <class typeT>
 bool BSTGeneric<typeT>::traversePostOrder() {
-   cout << "Post-Order: ";
+   cout << "Post-Order: " << endl;
    // Check for empty tree
    if (rootPtr == nullptr) {
       cout << "No traversal possible. This tree is empty." << endl;
@@ -230,7 +241,7 @@ bool BSTGeneric<typeT>::traversePostOrder(NodeGeneric<typeT>* thisNode) {
    }
 
    visit(thisNode);
-   cout << " , ";
+   // cout << " , "; // DEBUG
    return(true);
 }
 
@@ -279,17 +290,17 @@ bool BSTGeneric<typeT>::find(string someValue) {
       // While we haven't run off the end of the tree...
       while (currPtr != nullptr) {
          // Found it! (And it's undeleted)
-         if (currPtr->nodeData.keyword == someValue && currPtr->isDeleted == false) {
+         if (currPtr->nodeData == someValue && currPtr->isDeleted == false) {
             return(true);
          }
          // Found it! (But it's deleted)
-         else if (currPtr->nodeData.keyword == someValue && currPtr->isDeleted == true) {
+         else if (currPtr->nodeData == someValue && currPtr->isDeleted == true) {
             return(false);
          }
-         else if (someValue < currPtr->nodeData.keyword) {
+         else if (someValue < currPtr->nodeData) {
             currPtr = currPtr->leftPtr;
          }
-         else if (someValue > currPtr->nodeData.keyword) {
+         else if (someValue > currPtr->nodeData) {
             currPtr = currPtr->rightPtr;
          }
       } // Closing while loop. We've either exited (found the value) or run off the tree
@@ -308,22 +319,7 @@ void BSTGeneric<typeT>::printout() {
    traversePostOrder();
    cout << endl;
 }
-
-// #readin(string)
-template <class typeT>
-void BSTGeneric<typeT>::readin(string fileLocation) {
-   // Load the file from fileLocation
-   // For the whole file...
-   // parse a "word" off the file
-   // Convert it to lowercase (toLower)
-   // Attempt to shuffle contextWords[] down
-   // Add word to contextWords[11]
-   // Stitch contextWords[0-4]
-   // Stitch contextWords[6-11]
-   // Attempt to insert LinkedListContext
-   // If new linked list is already on the tree (the keyword matches) - foundNode.append(prevContext, postContext)
-}
-
+/*
 // #retrieve() - 
 template <class typeT>
 NodeGeneric<typeT>* BSTGeneric<typeT>::retrieve(typeT someData) {
@@ -348,7 +344,7 @@ NodeGeneric<typeT>* BSTGeneric<typeT>::retrieve(typeT someData) {
    } // Closing if
    return(nullptr);
 } // Closing retrieve()
-
+*/
 
 
 // X--------------------------------X
@@ -361,8 +357,9 @@ NodeGeneric<typeT>* BSTGeneric<typeT>::retrieve(typeT someData) {
 template <class typeT>
 BSTGeneric<typeT>::BSTGeneric() {
    // Make a default node of typeT
-   rootPtr = new NodeGeneric<typeT>();
-   cout << "Default genericBST constructor called: " << rootPtr->nodeData; // DEBUG
+   LinkedListContext defaultList(); // TODO: Remove this
+   this->rootPtr = nullptr;
+   cout << "Default genericBST constructor called. RootPtr set to nullptr" << endl; // DEBUG
 }
 
 // #BSTGeneric(string) - Constructor from file address
@@ -376,7 +373,7 @@ BSTGeneric<typeT>::BSTGeneric(string fileAddress) {
    fileInputObj.open(fileAddress);
    // Confirm that file was opened. Report otherwise if not.
    if (!fileInputObj) {
-    cout << "Unable to open file Stopword list";
+    cout << "Unable to open file";
    }
    // Read the file
    while (fileInputObj >> aWord) {
@@ -390,13 +387,15 @@ BSTGeneric<typeT>::BSTGeneric(string fileAddress) {
    fileInputObj.close();
 }
 
+/*
 // #BSTGeneric(typeT) - Constructor by datatype
 template <class typeT>
 BSTGeneric<typeT>::BSTGeneric(typeT someData, int signature) {
    // Make a node of typeT
-   rootPtr = new NodeGeneric<typeT>(someData);
    cout << "Constructor(typeT) called: "; // DEBUG
+   rootPtr = new NodeGeneric<typeT>(someData);
 }
+*/
 
 // #~BSTGeneric() - Destructor
 template <class typeT>
