@@ -1,19 +1,18 @@
 // Tim Lum
 // twhlum@gmail.com
-// 2017.11.12
+// 2017.12.04
 // For the University of Washington Bothell CSS 501A
 // Autumn 2017, Graduate Certificate in Software Design & Development (GCSDD)
 //
 // File Description:
-// This file is the implementation file for the Puzzle class.
-// Note: The Puzzle class will return the first valid solution it arrives at.
-// Note: The Puzzle class will not prevent Sudoku rule violations on input.
-// Note: The Puzzle class will accept invalid Sudoku problems that have no solution.
+// This file is the driver file for the Concordance Assignment. This program shall accept a list of
+// stopwords (stopwords.txt) as well as a command argument corpus location. From these bodies of data
+// it will generate a concordance in KeyWord In Context (KWIC) format.
 //
 // Package files:
 // Driver.cpp
-// File1.h
-// File1.cpp
+// BSTGeneric.h
+// BSTGeneric.cpp
 // File2.h
 // File2.cpp
 //
@@ -129,13 +128,25 @@
 // 2. "< <Filepath>/<Filename>.txt" ie. "< /Sudoku.txt"
 // ie. < /Sudoku.txt
 //
+// To pass a command argument:
+// 1. Go to the top menu bar => Debug => <ProjectName> Properties => Debugging => Command Arguments =>
+// 2. Enter the file address and name
+// ie. corpus.txt
+// 3. Alter main() method signature as follows: main( int argc, char* argv[] ) {
+// 4. The variable "argv[1]" now refers to the first command argument passed
+//
+// To run in Linux with Valgrind and a command argument
+// valgrind --leak-check=full --show-leak-kinds=all /home/Teabean/a.out Sudoku.txt
+//
 // ---- BEGIN STUDENT CODE ----
 
 // X---------X
 // |  INDEX  |
 // X---------X
 // Include Statements
+// Global Variables
 // Control Variables
+// Unit Tests (omitted for submission)
 // Program Body
 
 
@@ -152,23 +163,18 @@
 // Necessary for string operations
 #include <string>
 
-// Necessary for stream operations
-//#include <sstream>
+// The NodeGeneric used in a BSTGeneric class
+#include "NodeGeneric.cpp"
 
-// Header for the Square class
-//#include "genericBST.h"
-
-// Header for the TemplateExample class
-//#include "BSTString.h"
-//#include "NodeString.cpp"
-//#include "NodeContext.cpp"
-//#include "NodeConcordance.cpp"
-//#include "BSTConcordance.h"
-#include "NodeGeneric.cpp" // 
+// The BSTGeneric class - Used to create a stopword list and a concordance tree.
 #include "BSTGeneric.h"
 #include "BSTGeneric.cpp" // .cpp required here due to generic/template functionality of this class
-#include "LinkedListContext.h" // Data field of a Concordance BST Node
+
+// The Corpus Reader class - Packages the corpus into valid data modules for the BSTGeneric class to handle
 #include "ReaderCorpus.h"
+
+// The LinkedListContext class - Used as a data field in a Concordance Node
+#include "LinkedListContext.h"
 
 // Methods not found in the current namespace are directed to check the 'std' namespace
 using namespace std;
@@ -193,6 +199,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // |                         |
 // X-------------------------X
 
+/*
    // Assignment controller
    bool assignmentSwitch = 1;
 
@@ -231,6 +238,9 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 
    // Corpus reader tests
    bool unitTest11 = 0;
+*/
+
+
 
 // X--------------------X
 // |                    |
@@ -320,7 +330,6 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << "nextPtr.data : " << testNode.nextPtr->prevContext << testNode.nextPtr->postContext << endl;
       cout << endl;
    }
-*/
 
    // Test case 07: Linked List of Contexts test (data field of a Concordance BST Node)
    if (unitTest07 == true) {
@@ -360,7 +369,6 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << endl;
    }
 
-/*
    // Test case 08: BST Concordances instantiation test
    if (unitTest08 == true) {
       cout << "UnitTest08: ConcordanceBST instantiation test" << endl;
@@ -368,9 +376,7 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       cout << testConcordance.rootPtr;
       cout << endl << endl;
    }
-*/
 
-   /*
    // Test case 09: Generic node instantiation and pointer assignment test
    if (unitTest09 == true) {
       cout << "UnitTest09: NodeGeneric instantiation test" << endl;
@@ -450,64 +456,79 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 // |    ASSIGNMENT DRIVER    |
 // |                         |
 // X-------------------------X
-   if (assignmentSwitch == true) {
-      cout << "Running the assignment..." << endl;
 
-   // Make a stoplistBST
+   if (true) { // Note to grader: This switch decoupled from control variables for assignment submission
+
+
+
+   // X-----------------------X
+   // |    Make a Stoplist    |
+   // X-----------------------X
       cout << "Generate a stopwordBST" << endl; // DEBUG
       BSTGeneric<string> stopListBST("stopwords.txt");
-      stopListBST.printout(); // DEBUG
 
-   // Make a CorpusReader
+
+
+   // X----------------------------X
+   // |    Make a Corpus Reader    |
+   // X----------------------------X
       ReaderCorpus theScribe;
-      // Load the corpus
+
+      // Load the corpus to the reader
       theScribe.loadFile(argv[1]);
-      // Prime the reader
+
+      // Prime the reader so that its current word is the first word of the corpus
       theScribe.prime();
-      // Find the first valid keyword
-      // While the Stoplist reports that the current word can be found...
+
+      // Check to see if the reader must advance further based on the stoplist contents
       while (stopListBST.find(theScribe.getCurrWord())) {
          // Move the corpus reader up a word
-         // cout << "Avanti!" << endl; // DEBUG
          theScribe.advance();
-      } // While loop closed, we should be looking at the first non-stopword in the corpus. "the" expected
+      } // While loop closed, we should be looking at the first non-stopword in the corpus
 
+
+
+   // X--------------------------------X
+   // |    Make a LinkedListContext    |
+   // X--------------------------------X
       // Output the first LinkedListContext object
       LinkedListContext* constructoPresto;
       constructoPresto = theScribe.makeLinkedListContext();
 
-      cout << "    ConstructoPresto: " << constructoPresto->toString(); // DEBUG
 
-      // Make a concordanceBST
-      // DEBUG - not to be that is  the  question whether tis nobler in
-      cout << "    Make a concordanceBST." << endl; // DEBUG
+
+   // X-----------------------------X
+   // |    Make a ConcordanceBST    |
+   // X-----------------------------X
+      cout << "Make a concordanceBST." << endl; // DEBUG
       BSTGeneric<LinkedListContext> concordanceBST; // Omit ()
-      concordanceBST.printout();
-      cout << "    Inserting..." << endl;
 
+      // Insert the LinkedListContext above to the Concordance BST
       concordanceBST.insert(*constructoPresto);
-      cout << "    Insert successful." << endl;
-      concordanceBST.printout();
 
-      // Advance the reader and insert
+      // Advance the reader through the file, insert when possible
       theScribe.advance(); // Fencepost advance
+
+      // While the reader has not reached the end...
       while (!theScribe.isFinished()) {
+         // Check to see if the current word appears on the stoplist. If not...
          if (!stopListBST.find(theScribe.getCurrWord())) {
+            // attempt to insert the current LinkedListContext output
             concordanceBST.insert(*theScribe.makeLinkedListContext());
          }
+         // And move the reader up one word
          theScribe.advance();
-      }
+      } // Closing while-loop. Reader has parsed the entire corpus.
+
+
+
+   // X-------------------------------X
+   // |    Display the Concordance    |
+   // X-------------------------------X
       concordanceBST.printout();
 
       cout << "    Stop." << endl;
-
-   
-   
    }
-
-
-//   stopwordBST stopwordList;
-//   cout << stopwordList.toString();
 
    return(0);
 }
