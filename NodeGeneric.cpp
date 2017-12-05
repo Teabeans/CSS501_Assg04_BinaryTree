@@ -179,4 +179,5 @@ struct NodeGeneric {
       leftPtr = nullptr;
       rightPtr = nullptr;
    }
+
 };
