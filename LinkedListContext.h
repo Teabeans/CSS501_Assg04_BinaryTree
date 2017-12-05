@@ -148,131 +148,323 @@
 
 
 
-// X--------------------------X
-// |                          |
-// |    INCLUDE STATEMENTS    |
-// |                          |
-// X--------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       INCLUDE STATEMENTS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 #pragma once
 
+// Necessary for input-output operations
 #include <iostream>
-#include <string>
-#include <fstream>
 
+// Necessary for string operations
+#include <string>
+
+// Node definition for a context node (holding data1, data2, next)
 #include "NodeContext.cpp"
 
 using namespace std;
 
-// This is the data field of a BSTConcordance node
+// X--------------------------X
+// |    #LinkedListContext    |
+// X--------------------------X
+// Description: Performs corpus-related operations.
 class LinkedListContext {
+
+
+
 private:
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X----------------------X
-// |                      |
-// |    PRIVATE FIELDS    |
-// |                      |
-// X----------------------X
-
-// TODO: Populate with fields after this is confirmed to work.
-
-
-// X-----------------------X
-// |                       |
-// |    PRIVATE METHODS    |
-// |                       |
-// X-----------------------X
-
-public: // TODO: Divide private and public fields/methods appropriately after testing
-
-// X---------------------X
-// |                     |
-// |    PUBLIC FIELDS    |
-// |                     |
-// X---------------------X
-
-static int formatLength;
-static int keywordFormatLength;
-
-
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 NodeContext* currPtr;
 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 NodeContext* headNodePtr;
 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
+static int formatLength;
+
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
+static int keywordFormatLength;
+
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string keyword; // Inherited from the BSTConcordance node
 
 
 
-// X----------------------X
-// |                      |
-// |    PUBLIC METHODS    |
-// |                      |
-// X----------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // #advance() - If currPtr is not the last node, moves currPtr forward one body node per call
+// X----------------X
+// |    #NAME    |
+// X----------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 void advance();
 
 // #append(string, string) - Adds a new node to the Linked List using the provided contexts
+// X----------------X
+// |    #NAME    |
+// X----------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 void append(string prevContext, string postContext);
 
 // #isLastNode() - Reports whether the currPtr points to the last body node.
+// X----------------X
+// |    #NAME    |
+// X----------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool isLastNode();
 
-
 // #reset() - Sets the currPtr back to the head node
+// X----------------X
+// |    #reset()    |
+// X----------------X
+// #reset() - Sets the current node pointer to the head node
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 void reset();
 
-// #toString() - Outputs the entire linked list as a string
+
+
+public:
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// None for this class
+
+
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// X-------------------X
+// |    #toString()    |
+// X-------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string toString();
 
 
 
-// X--------------------------------X
-// |                                |
-// |    CONSTRUCTORS/DESTRUCTORS    |
-// |                                |
-// X--------------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       CONSTRUCTORS / DESTRUCTORS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // Default constructor
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext();
 
 // Constructor for a head node's keyword and context
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext(string someKeyword, string prevContext, string postContext);
 
 // #~LinkedListContext() - Destructor for a LinkedListContext
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 ~LinkedListContext();
 
-// X-------------------------X
-// |                         |
-// |    GETTERS / SETTERS    |
-// |                         |
-// X-------------------------X
 
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       GETTERS / SETTERS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string getPrevContext(const NodeContext* currNodePtr) const;
 
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string getPostContext(const NodeContext* currNodePtr) const;
 
 
-// X--------------------------X
-// |                          |
-// |    OPERATOR OVERLOADS    |
-// |                          |
-// X--------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       OPERATOR OVERLOADS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // #operator< - Custom behavior for the less-than operator
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const;
 
 // #operator> - Custom behavior for the less-than operator
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const;
 
 // #operator== - Custom behavior for the equality operator
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const;
 
 // #operator= - Custom behavior for the assignment operator
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext& operator=(LinkedListContext& someLinkedList);
 
 // #operator<< - 
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 friend ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList);
+
 }; // Closing class LinkedListContext
 
    
