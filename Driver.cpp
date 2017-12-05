@@ -151,7 +151,7 @@
 // X---------X
 // Include Statements
 // Global Variables
-// Control Variables
+// Control Variables (omitted for submission)
 // Unit Tests (omitted for submission)
 // Program Body
 
@@ -187,297 +187,65 @@ using namespace std;
 
 
 
-// X------------------------X
-// |                        |
-// |    GLOBAL VARIABLES    |
-// |                        |
-// X------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       GLOBAL VARIABLES
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // None (prohibited for this course)
 
 
 
-int main( int argc, char* argv[] ) {  // Array of command-line arguments strings  
+int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
 
-// X-------------------------X
-// |                         |
-// |    CONTROL VARIABLES    |
-// |                         |
-// X-------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       CONTROL VARIABLES
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
-/*
-   // Assignment controller
-   bool assignmentSwitch = 1;
-
-   // BSTString test
-   bool unitTest00 = 0;
-
-   // Command line argument reception test
-   bool unitTest01 = 0;
-
-   // File load test and tree build
-   bool unitTest02 = 0;
-
-   // toString() test
-   bool unitTest03 = 0;
-
-   // find() test
-   bool unitTest04 = 0;
-
-   // setDelete() test
-   bool unitTest05 = 0;
-
-   // Context node test
-   bool unitTest06 = 0;
-
-   // Linked List of contexts test (data field of a ConcordanceBST)
-   bool unitTest07 = 0;
-
-   // BST Concordances instantiation test
-   bool unitTest08 = 0;
-
-   // Generic node instantiation and pointer assignment test
-   bool unitTest09 = 0;
-
-   // Generic tree instantiation
-   bool unitTest10 = 0;
-
-   // Corpus reader tests
-   bool unitTest11 = 0;
-*/
+// Omitted for assignment submission
 
 
 
-// X--------------------X
-// |                    |
-// |    PROGRAM BODY    |
-// |                    |
-// X--------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       UNIT TESTS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// Omitted for assignment submission
 
 
 
-// X------------------X
-// |                  |
-// |    UNIT TESTS    |
-// |                  |
-// X------------------X
-   
-/*
-   // Test case 00: BSTString test
-   if (unitTest00 == true) {
-      cout << "UnitTest00: BSTString Instantiation test" << endl;
-      BSTString testObj;
-      cout << "Root node data: " << testObj.getRootValue() << endl;
-      cout << endl;
-   }
-
-   // Test case 01: Command line argument reception test
-   if (unitTest01 == true) {
-      cout << "UnitTest01: Command Line Argument test" << endl;
-      string programLocation = argv[0];
-      string fileLocation = argv[1];
-      cout << "Arg[0] Program Location: " << programLocation << endl;
-      cout << "Arg[1] File Location:    " << fileLocation << endl;
-      cout << endl;
-   }
-
-   // Test case 02: File load test and tree build test
-   if (unitTest02 == true) {
-      cout << "UnitTest02: File load test (stopwords)" << endl;
-      string fileLocation = "stopwords.txt";
-      BSTString fileReader(fileLocation);
-      cout << endl;
-   }
-
-   // Test case 03: printout() test
-   if (unitTest03 == true) {
-      cout << "UnitTest03: Stopword tree build test" << endl;
-      BSTString fileReader("stopwords.txt");
-      fileReader.printout();
-      cout << endl;
-   }
-
-   // Test case 04: find() test
-   if (unitTest04 == true) {
-      cout << "UnitTest04: Find() test" << endl;
-      BSTString findTester("stopwords.txt");
-      cout << "hooligan  : " << findTester.find("hooligan") << endl;
-      cout << "nibleheim : " << findTester.find("nibleheim") << endl;
-      cout << endl;
-   }
-
-   // Test case 05: setDelete() test
-   if (unitTest05 == true) {
-      cout << "UnitTest05: setDelete() test" << endl;
-      BSTString deleteTester("stopwords.txt");
-      deleteTester.printout();
-      cout << "setDelete(Hooligan)  : " << deleteTester.setDelete("hooligan") << endl;
-      cout << "setDelete(nibleheim) : " << deleteTester.setDelete("nibleheim") << endl;
-      deleteTester.printout();
-      cout << endl;
-   }
-
-   // Test case 06: Node context test
-   if (unitTest06 == true) {
-      cout << "UnitTest06: Context node tests" << endl;
-      NodeContext testNode("beforetest", "aftertest");
-      cout << "prevContext : " << testNode.prevContext << endl;
-      cout << "postContext : " << testNode.postContext << endl;
-      cout << "nextPtr     : " << testNode.nextPtr << endl;
-      cout << "Making second node..." << endl;
-      NodeContext pointTest("pretest", "posttest");
-      cout << "prevContext : " << pointTest.prevContext << endl;
-      cout << "postContext : " << pointTest.postContext << endl;
-      cout << "nextPtr     : " << pointTest.nextPtr << endl;
-      // Link two nodes
-      cout << "Linking..." << endl;
-      testNode.nextPtr = &pointTest;
-      cout << "nextPtr      : " << testNode.nextPtr << endl;
-      cout << "nextPtr.data : " << testNode.nextPtr->prevContext << testNode.nextPtr->postContext << endl;
-      cout << endl;
-   }
-
-   // Test case 07: Linked List of Contexts test (data field of a Concordance BST Node)
-   if (unitTest07 == true) {
-      cout << "UnitTest07: Linked list instantiation test" << endl;
-      // Headnode constructor test
-      LinkedListContext testList2("prevContext", "keyword!", "postContext");
-      cout << "TestList keyword  : " << testList2.keyword << endl;
-      cout << "Headnode context  : " << testList2.headNodePtr->prevContext << endl;
-      cout << "Headnode context  : " << testList2.headNodePtr->postContext << endl;
-      cout << "Headnode nextPtr  : " << testList2.headNodePtr->nextPtr << endl;
-      // Append() tests
-      cout << "Appending..." << endl;
-      testList2.append("nextString", "nextnextString");
-      cout << "Headnode nextPtr  : " << testList2.headNodePtr->nextPtr << endl;
-      cout << "Bodynode context  : " << testList2.headNodePtr->nextPtr->prevContext << endl;
-      cout << "Bodynode context  : " << testList2.headNodePtr->nextPtr->postContext << endl;
-      cout << "Bodynode nextPtr  : " << testList2.headNodePtr->nextPtr->nextPtr << endl;
-
-      // toString() tests
-      testList2.append("to be or not to", "that is the question quack");
-      cout << "Printing toString() short..." << endl;
-      cout << testList2.toString() << endl;
-      cout << endl;
-      // Global toString() tests
-      LinkedListContext testList1("More conteeeeext whooooo", "Another keyword! Longer than the last!", "Moar post context!");
-      testList1.append("This is too easy!", "We don't even caaaaare!");
-      testList1.append("Somewhere over", "the rainbow");
-
-      cout << "Printing toString() long..." << endl;
-      cout << testList1.toString();
-      cout << testList2.toString();
-
-      // Linked List assignment (amalgamation) test
-      cout << "Combining lists..." << endl;
-      testList1 = testList2;
-      cout << testList1.toString();
-      cout << endl;
-   }
-
-   // Test case 08: BST Concordances instantiation test
-   if (unitTest08 == true) {
-      cout << "UnitTest08: ConcordanceBST instantiation test" << endl;
-      BSTConcordance testConcordance;
-      cout << testConcordance.rootPtr;
-      cout << endl << endl;
-   }
-
-   // Test case 09: Generic node instantiation and pointer assignment test
-   if (unitTest09 == true) {
-      cout << "UnitTest09: NodeGeneric instantiation test" << endl;
-
-      // Generic node of type int
-      NodeGeneric<int> TempNodeInt;
-      NodeGeneric<int>* TempNodeIntPtr;
-      TempNodeIntPtr = &TempNodeInt;
-      TempNodeIntPtr->nodeData = 12345;
-      int outputInt = TempNodeIntPtr->nodeData;
-      cout << "NodeGeneric<int> value ('12345' expected): " << outputInt << endl;
-
-      // Generic node of type string
-      NodeGeneric<string> TempNodeString;
-      NodeGeneric<string>* TempNodeStringPtr;
-      TempNodeStringPtr = &TempNodeString;
-      TempNodeStringPtr->nodeData = "ABCDE";
-      string outputString = TempNodeStringPtr->nodeData;
-      cout << "NodeGeneric<string> value ('ABCDE' expected): " << outputString << endl;
-
-      // Generic node of type LinkedListContext
-      NodeGeneric<LinkedListContext> TempNodeLLC;
-      NodeGeneric<LinkedListContext>* TempNodeLLCPtr;
-      TempNodeLLCPtr = &TempNodeLLC;
-      TempNodeLLCPtr->nodeData = LinkedListContext("this", "is", "sparta");
-      // TempNodeLLC.nodeData.append("this", "the beginning"); // Test the append() function of the LinkedListContext
-      LinkedListContext outputLLC = TempNodeLLCPtr->nodeData;
-      cout << "NodeGeneric<string> value ('this is sparta' expected): " << outputLLC << endl;
-
-      cout << endl;
-   }
-
-   // Test case 10: Generic tree instantiation
-   if (unitTest10 == true) {
-      cout << "UnitTest10: GenericTree instantiation test" << endl;
-      BSTGeneric<int> TempTreeInt;
-      cout << endl;
-   }
-
-   // Test case 11: Corpus reader tests
-   if (unitTest11 == true) {
-      cout << "UnitTest11: Corpus Reader instantiation test" << endl;
-
-      // Instantiation test
-      ReaderCorpus testReader;
-      cout << "Context Words: " << testReader.getContextWords() << endl;
-      cout << "PrevContext: " << testReader.getPrevContext() << endl;
-      cout << "PostContext: " << testReader.getPostContext() << endl;
-
-      // File load from argv[1] test
-      testReader.loadFile(argv[1]);
-
-      // Advance() test
-      cout << "Priming... : " << testReader.prime() << endl;
-      cout << "Context Words: " << testReader.getContextWords() << endl;
-      cout << "PrevContext: " << testReader.getPrevContext() << endl;
-      cout << "CurrWord: " << testReader.getCurrWord() << endl;
-      cout << "PostContext: " << testReader.getPostContext() << endl;
-
-      // Linked list creation test
-      cout << "LinkedList creation test" << endl;
-      LinkedListContext testList = testReader.makeLinkedListContext();
-      cout << testList.toString() << endl;
-
-      // End-of-file test
-      cout << "End-Of-File test" << endl;
-      for (int i = 0 ; i < 40 ; i++ ) {
-         testReader.advance();
-         cout << "Context Words: " << testReader.getContextWords() << endl;
-      }
-      cout << endl;
-   }
-   */
-
-// X-------------------------X
-// |                         |
-// |    ASSIGNMENT DRIVER    |
-// |                         |
-// X-------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       ASSIGNMENT DRIVER
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
    if (true) { // Note to grader: This switch decoupled from control variables for assignment submission
 
 
 
-   // X-----------------------X
-   // |    Make a Stoplist    |
-   // X-----------------------X
-      cout << "Generate a stopwordBST" << endl; // DEBUG
+// X-----------------------X
+// |    Make a Stoplist    |
+// X-----------------------X
       BSTGeneric<string> stopListBST("stopwords.txt");
 
 
 
-   // X----------------------------X
-   // |    Make a Corpus Reader    |
-   // X----------------------------X
+// X-----------------------------X
+// |    Make a ConcordanceBST    |
+// X-----------------------------X
+      BSTGeneric<LinkedListContext> concordanceBST;
+
+
+
+// X----------------------------X
+// |    Make a Corpus Reader    |
+// X----------------------------X
       ReaderCorpus theScribe;
 
       // Load the corpus to the reader
@@ -486,35 +254,11 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       // Prime the reader so that its current word is the first word of the corpus
       theScribe.prime();
 
-      // Check to see if the reader must advance further based on the stoplist contents
-      while (stopListBST.find(theScribe.getCurrWord())) {
-         // Move the corpus reader up a word
-         theScribe.advance();
-      } // While loop closed, we should be looking at the first non-stopword in the corpus
 
 
-
-   // X--------------------------------X
-   // |    Make a LinkedListContext    |
-   // X--------------------------------X
-      // Output the first LinkedListContext object
-      LinkedListContext* constructoPresto;
-      constructoPresto = theScribe.makeLinkedListContext();
-
-
-
-   // X-----------------------------X
-   // |    Make a ConcordanceBST    |
-   // X-----------------------------X
-      cout << "Make a concordanceBST." << endl; // DEBUG
-      BSTGeneric<LinkedListContext> concordanceBST; // Omit ()
-
-      // Insert the LinkedListContext above to the Concordance BST
-      concordanceBST.insert(*constructoPresto);
-
-      // Advance the reader through the file, insert when possible
-      theScribe.advance(); // Fencepost advance
-
+// X-----------------------X
+// |    Read the corpus    |
+// X-----------------------X
       // While the reader has not reached the end...
       while (!theScribe.isFinished()) {
          // Check to see if the current word appears on the stoplist. If not...
@@ -527,15 +271,12 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       } // Closing while-loop. Reader has parsed the entire corpus.
 
 
-
-   // X-------------------------------X
-   // |    Display the Concordance    |
-   // X-------------------------------X
+// X-------------------------------X
+// |    Display the Concordance    |
+// X-------------------------------X
       concordanceBST.printout();
 
-      cout << "    Stop." << endl;
    }
-
    return(0);
 }
 
