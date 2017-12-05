@@ -148,94 +148,86 @@
 
 
 
-// X--------------------------X
-// |                          |
-// |    INCLUDE STATEMENTS    |
-// |                          |
-// X--------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       INCLUDE STATEMENTS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 #pragma once
 
+// Necessary for input-output operations
 #include <iostream>
+
+// Necessary for string operations
 #include <string>
-// #include <fstream>
 
 #include "LinkedListContext.h"
 #include "NodeContext.cpp"
 
 using namespace std;
 
-//class LinkedListContext {
-//private:
 
-// X----------------------X
-// |                      |
-// |    PRIVATE FIELDS    |
-// |                      |
-// X----------------------X
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // #formatLength - Variable that informs the output formatting
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 int LinkedListContext::formatLength;
+
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 int LinkedListContext::keywordFormatLength;
 
-// Do not reinitialize in .cpp file
+// Do not reinitialize these variables in the .cpp.
+// Included here for reference
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 // NodeContext* currPtr;
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 // NodeContext* headNodePtr;
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 // string keyword;
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 // int longestPrev;
 
 
 
-// X-----------------------X
-// |                       |
-// |    PRIVATE METHODS    |
-// |                       |
-// X-----------------------X
-
-// X----------------X
-// |    #reset()    |
-// X----------------X
-// #reset() - Sets the current node pointer to the head node
-void LinkedListContext::reset() {
-   if (headNodePtr != nullptr) {
-      currPtr = headNodePtr; // TODO - Confirm this assignment works
-   }
-}
-
-// #isLastNode() - Reports whether the currPtr points to the last body node.
-bool LinkedListContext::isLastNode() {
-   // Test to avoid read access error, currPtr might be null, in which case nextPtr cannot be read
-//   if (currPtr == nullptr) {
-//      return(true);
-//   }
-   // If the nextPtr is off the end of the linked list...
-   if (currPtr->nextPtr == nullptr) {
-      // This is the last node
-      return(true);
-   }
-   // Otherwise, it isn't.
-   return(false);
-}
-
-
-
-// X---------------------X
-// |                     |
-// |    PUBLIC FIELDS    |
-// |                     |
-// X---------------------X
-
-
-
-// X----------------------X
-// |                      |
-// |    PUBLIC METHODS    |
-// |                      |
-// X----------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // X------------------X
 // |    #advance()    |
@@ -276,6 +268,64 @@ void LinkedListContext::append(string prevContext, string postContext){
    }
 } // End append
 
+// #isLastNode() - Reports whether the currPtr points to the last body node.
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
+bool LinkedListContext::isLastNode() {
+   // Test to avoid read access error, currPtr might be null, in which case nextPtr cannot be read
+//   if (currPtr == nullptr) {
+//      return(true);
+//   }
+   // If the nextPtr is off the end of the linked list...
+   if (currPtr->nextPtr == nullptr) {
+      // This is the last node
+      return(true);
+   }
+   // Otherwise, it isn't.
+   return(false);
+}
+
+// X----------------X
+// |    #reset()    |
+// X----------------X
+// #reset() - Sets the current node pointer to the head node
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
+void LinkedListContext::reset() {
+   if (headNodePtr != nullptr) {
+      currPtr = headNodePtr; // TODO - Confirm this assignment works
+   }
+}
+
+
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// None for this class
+
+
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
 // X-------------------X
 // |    #toString()    |
 // X-------------------X
@@ -312,7 +362,7 @@ string LinkedListContext::toString() {
 
    // And while we haven't run off the end of the list...
    while (!this->isLastNode()) {
-      retString = retString + "$"; // DEBUG
+      // retString = retString + "$"; // DEBUG
       // cout << "LLC.toString() while-loop activated." << endl; // DEBUG
       // Move forward one node
       this->advance();
@@ -332,16 +382,21 @@ string LinkedListContext::toString() {
 
 
 
-// X--------------------------------X
-// |                                |
-// |    CONSTRUCTORS/DESTRUCTORS    |
-// |                                |
-// X--------------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       CONSTRUCTORS / DESTRUCTORS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // X---------------------------X
 // |    LinkedListContext()    |
 // X---------------------------X
-// Default constructor - Called by 
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext::LinkedListContext() {
    // cout << "LLC.LLC() - Default constructor called." << endl; // DEBUG
 //   keyword = ".";
@@ -351,6 +406,15 @@ LinkedListContext::LinkedListContext() {
 }
 
 // #LinkedListContext(string, string, string) - Makes a context linked list with a keyword and head node
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext::LinkedListContext(string prevContext, string someKeyword, string postContext) {
    keyword = someKeyword;
    // Update the maximum observed keyword length
@@ -365,6 +429,15 @@ LinkedListContext::LinkedListContext(string prevContext, string someKeyword, str
 }
 
 // #~LinkedListContext() - Destructor
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext::~LinkedListContext() {
    // cout << "Destructo Presto!" << endl; // DEBUG
    if (this->headNodePtr == nullptr) {
@@ -388,7 +461,7 @@ LinkedListContext::~LinkedListContext() {
          this->advance();
          //cout << "Crossing over " << this->currPtr->prevContext << ":" << this->currPtr->postContext << endl; // DEBUG
       } // Closing while loop, curr points to last node, prev points to second to last
-      // cout << "Deallocating " << this->currPtr->prevContext << ":" << this->currPtr->postContext << endl; // DEBUG
+      cout << "Foop!" << this->currPtr->prevContext << ":" << this->currPtr->postContext << endl; // DEBUG
       // And delete it
       delete this->currPtr;
       // And remove the previous pointer
@@ -399,36 +472,64 @@ LinkedListContext::~LinkedListContext() {
 
    // cout << "Deleting Head Node: " << endl; // DEBUG
    // cout << "Deallocating " << this->headNodePtr->prevContext << ":" << this->headNodePtr->postContext << endl; // DEBUG
+   cout << "Foopah!" << endl; // DEBUG
    delete this->headNodePtr;
 }
 
 
 
-// X-------------------------X
-// |                         |
-// |    GETTERS / SETTERS    |
-// |                         |
-// X-------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       GETTERS / SETTERS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // #getPrevContext() - Returns the previous context of the current node
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string LinkedListContext::getPrevContext(const NodeContext* currNodePtr) const {
    return(currNodePtr->prevContext);
 }
 
 // #getPostContext() - Returns the post context of the current node
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string LinkedListContext::getPostContext(const NodeContext* currNodePtr) const {
       return(currNodePtr->postContext);
 }
 
 
 
-// X--------------------------X
-// |                          |
-// |    OPERATOR OVERLOADS    |
-// |                          |
-// X--------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       OPERATOR OVERLOADS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // #operator< - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const {
    if (this->keyword < someLinkedList.keyword) {
       return(true);
@@ -439,6 +540,15 @@ bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const
 }
 
 // #operator> - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const {
    if (this->keyword > someLinkedList.keyword) {
       return(true);
@@ -448,7 +558,15 @@ bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const
    }
 }
 
-// #operator= - Custom behavior for the assignment operator. Appends the RH context list to the receiving context list
+// X--------------------------------------X
+// |    #operator=(LinkedListContext&)    |
+// X--------------------------------------X
+// Description:      Custom behavior for the assignment operator. Appends the RH context list to the receiving context list
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext& LinkedListContext::operator=(LinkedListContext& RHarg) {
    // Check to see if "this" and "RHarg" are the same thing
    if (this == &RHarg) { // Compares reference addresses
@@ -462,6 +580,7 @@ LinkedListContext& LinkedListContext::operator=(LinkedListContext& RHarg) {
       this->keyword = RHarg.keyword;
       // If they aren't... target the first Linked List Node of the RH argument
       NodeContext* targetNodePtr = RHarg.headNodePtr;
+      // cout << "TargetNodePtr: " << targetNodePtr->prevContext << targetNodePtr->postContext;
       // And while the target isn't nullptr...
       while(targetNodePtr != nullptr) {
          // cout << "LLC.operator= appending..." << endl;
@@ -479,31 +598,26 @@ LinkedListContext& LinkedListContext::operator=(LinkedListContext& RHarg) {
    // cout << "Closing LLC.operator=()" << endl << endl;
    return *this;
 }
-/*
-BCD& BCD::operator=(const BCD& rightHandSide) {
-   //cout << "Starting operator=" << endl;
-   //cout << "RHS: " << rightHandSide.toString() << endl;
-   if (this != &rightHandSide) {
-      this->obliterate();
-      this->deepcopy(rightHandSide);
-      // Copy relevant field states
-      this->length = rightHandSide.length;
-      this->isPositive = rightHandSide.isPositive;
-   }
-   //cout << "Operator= complete... returning *this: " << this->toString() << endl;
-   return *this;
-}
-*/
 
-// #operator== - Custom behavior for the equality operator for this (RHarg) and another LinkedListContext (LHarg)
-bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const {
-   if (this->keyword == someLinkedList.keyword) {
-      // TODO: Append the context before returning true
-      // TODO: Confirm which hand argument should receive the appended context (assuming RHarg catches it for now)
-//      this->append(someLinkedList.getPrevContext(someLinkedList.headNodePtr) , someLinkedList.getPostContext(someLinkedList.headNodePtr) );
+// X---------------------------------------X
+// |    #operator==(LinkedListContext&)    |
+// X---------------------------------------X
+// Custom behavior for the equality operator for this (RHarg) and another LinkedListContext (LHarg)
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
+bool LinkedListContext::operator==(const LinkedListContext& RHarg) const {
+   // Determine incoming context
+   string appPreCont = RHarg.getPrevContext(RHarg.headNodePtr);
+   string appPostCont = RHarg.getPostContext(RHarg.headNodePtr);
+   if (this->keyword == RHarg.keyword) {
+      // cout << "LLC.op== : Keywords equal. " << this->keyword << " vs " << RHarg.keyword << endl; // DEBUG
       return(true);
    }
    else {
+      // cout << "LLC.op== : Keywords inequal." << this->keyword << " vs " << RHarg.keyword << endl; // DEBUG;
       return(false);
    }
 }
