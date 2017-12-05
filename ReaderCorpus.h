@@ -147,89 +147,197 @@
 // ---- BEGIN STUDENT CODE ----
 
 
-// X--------------------------X
-// |                          |
-// |    INCLUDE STATEMENTS    |
-// |                          |
-// X--------------------------X
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       INCLUDE STATEMENTS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 #pragma once
 
+// Necessary for input-output operations
 #include <iostream>
-#include <string>
-#include <fstream>
 
+// Necessary for string operations
+#include <string>
+
+// Necessary for file stream operations
+// #include <fstream> // Disincluded from the .h - No file stream operations here
+
+// Field and method declarations for the LinkedListContext class
 #include "LinkedListContext.h"
 
 using namespace std;
 
-// Creates Generic Nodes with LinkedListContext data fields to pass to the BSTGeneric Concordance object. This is the packer.
-
+// X---------------------X
+// |    #ReaderCorpus    |
+// X---------------------X
+// Description: Performs corpus-related operations.
 class ReaderCorpus {
 
 private:
-// X----------------------X
-// |                      |
-// |    PRIVATE FIELDS    |
-// |                      |
-// X----------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 string contextWords[11];
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 string prevContext;
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 string currWord;
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 string postContext;
 
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
 ifstream fileObj;
 
 
 
-// X-----------------------X
-// |                       |
-// |    PRIVATE METHODS    |
-// |                       |
-// X-----------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
+bool isPrimed();
 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string trimPreNoise(string aWord);
 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string trimPostNoise(string aWord);
 
 
 public:
-// X---------------------X
-// |                     |
-// |    PUBLIC FIELDS    |
-// |                     |
-// X---------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// None for this class
 
 
 
-// X----------------------X
-// |                      |
-// |    PUBLIC METHODS    |
-// |                      |
-// X----------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
+// X------------------X
+// |    #advance()    |
+// X------------------X
+// Description:      Moves the corpus reader forward one word and
+//                   updates the prevContext, currWord, and postContext strings
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool advance();
 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool isFinished();
 
-bool isPrimed();
-
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool loadFile(string fileAddy);
 
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext* makeLinkedListContext();
 
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string prime();
 
-// X--------------------------------X
-// |                                |
-// |    CONSTRUCTORS/DESTRUCTORS    |
-// |                                |
-// X--------------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       CONSTRUCTORS / DESTRUCTORS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // #ReaderCorpus() - Default constructor
 ReaderCorpus();
@@ -237,14 +345,54 @@ ReaderCorpus();
 
 
 
-// X-------------------------X
-// |                         |
-// |    GETTERS / SETTERS    |
-// |                         |
-// X-------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       GETTERS / SETTERS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string getContextWords();
+
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string getPrevContext();
+
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string getCurrWord();
+
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string getPostContext();
 
 };
