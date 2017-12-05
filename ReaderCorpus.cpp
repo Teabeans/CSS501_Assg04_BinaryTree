@@ -146,38 +146,98 @@
 //
 // ---- BEGIN STUDENT CODE ----
 
-// X--------------------------X
-// |                          |
-// |    INCLUDE STATEMENTS    |
-// |                          |
-// X--------------------------X
 
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       INCLUDE STATEMENTS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// Necessary for input-output operations
 #include <iostream>
-#include <string>
-#include <fstream>
-#include <algorithm>  // For lowercasing
 
+// Necessary for string operations
+#include <string>
+
+// Necessary for file stream operations
+#include <fstream>
+
+// Necessary for string lowercasing operations
+#include <algorithm>
+
+// Field and method declarations for the ReaderCorpus class
 #include "ReaderCorpus.h"
+
+// Field and method declarations for the LinkedListContext class
 #include "LinkedListContext.h"
 
 using namespace std;
 
-// X----------------------X
-// |                      |
-// |    PRIVATE FIELDS    |
-// |                      |
-// X----------------------X
-
-// None declared in the .cpp
 
 
-// X-----------------------X
-// |                       |
-// |    PRIVATE METHODS    |
-// |                       |
-// X-----------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+// Do not reinitialize these variables in the .cpp.
+// Included here for reference
+
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
+// string contextWords[11];
+
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
+// string prevContext;
+
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
+// string currWord;
+
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
+// string postContext;
+
+// X-----------------X
+// |    #NAME    |
+// X-----------------X
+// Description: 
+// Invariants:  
+// ifstream fileObj;
+
+
+
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PRIVATE METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // #isFinished() - 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool ReaderCorpus::isFinished() {
    // If the fileObj is empty and the current word is empty...
    if (currWord == " ") {
@@ -190,6 +250,15 @@ bool ReaderCorpus::isFinished() {
 }
 
 // #trimPreNoise(string) - 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string ReaderCorpus::trimPreNoise(string aWord) {
    bool firstLetter = false;
    // Load the first character of the string
@@ -220,6 +289,15 @@ string ReaderCorpus::trimPreNoise(string aWord) {
 }
 
 // #trimPostNoise(string) - 
+// X-----------------------------------X
+// |    #NAME    |
+// X-----------------------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string ReaderCorpus::trimPostNoise(string aWord) {
    bool lastLetter = false;
    // Load the last character of the string
@@ -250,26 +328,32 @@ string ReaderCorpus::trimPostNoise(string aWord) {
 }
 
 
-// X---------------------X
-// |                     |
-// |    PUBLIC FIELDS    |
-// |                     |
-// X---------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC FIELDS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // None declared in the .cpp
 
 
 
-// X----------------------X
-// |                      |
-// |    PUBLIC METHODS    |
-// |                      |
-// X----------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       PUBLIC METHODS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
 // X------------------X
 // |    #advance()    |
 // X------------------X
-// Moves the corpus reader forward one word and updates the prevContext, currWord, and postContext strings
+// Description:      Moves the corpus reader forward one word and
+//                   updates the prevContext, currWord, and postContext strings
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool ReaderCorpus::advance() {
    // Test to see if advance() can even be called
    if (this->isFinished()) {
@@ -293,7 +377,7 @@ bool ReaderCorpus::advance() {
       // Check to see if valid chars are in the word
       bool validChars = false;
       for (unsigned int i = 0 ; i < nextWord.length() ; i++) {
-         if (nextWord[i] > 'a' && nextWord[i] < 'z') {
+         if (nextWord[i] >= 'a' && nextWord[i] <= 'z') {
             validChars = true;
          }
       } // Word scanned. Is it valid?
@@ -329,6 +413,15 @@ bool ReaderCorpus::advance() {
    return(true);
 }
 
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool ReaderCorpus::isPrimed() {
    if (contextWords[5] != "") {
       return (true);
@@ -336,6 +429,15 @@ bool ReaderCorpus::isPrimed() {
    return (false);
 } // Closing isLoaded()
 
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 bool ReaderCorpus::loadFile(string fileAddy) {
    fileObj.open(fileAddy);
    // Confirm that file was opened. Report otherwise if not.
@@ -347,12 +449,30 @@ bool ReaderCorpus::loadFile(string fileAddy) {
    return(true);
 }
 
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 LinkedListContext* ReaderCorpus::makeLinkedListContext() {
    LinkedListContext* retList = new LinkedListContext(prevContext, contextWords[5], postContext);
    return(retList);
 }
 
 // #prime() - Advances the reader to the first valid keyword-context state.
+// X------------------X
+// |    #NAME    |
+// X------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string ReaderCorpus::prime() {
    while (!isPrimed()) {
       this->advance();
@@ -362,13 +482,21 @@ string ReaderCorpus::prime() {
 
 
 
-// X--------------------------------X
-// |                                |
-// |    CONSTRUCTORS/DESTRUCTORS    |
-// |                                |
-// X--------------------------------X
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       CONSTRUCTORS / DESTRUCTORS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
-// #ReaderCorpus() - Default constructor
+// X---------------------X
+// |    #ReaderCorpus()    |
+// X---------------------X
+// Description:      Default constructor for the ReaderCorpus class
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 ReaderCorpus::ReaderCorpus() {
    // cout << "ReaderCorpus() default constructor called" << endl; // DEBUG
    prevContext = "Nothing to see here!";
@@ -381,13 +509,21 @@ ReaderCorpus::ReaderCorpus() {
 
 
 
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       GETTERS / SETTERS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-------------------------X
-// |                         |
-// |    GETTERS / SETTERS    |
-// |                         |
-// X-------------------------X
-
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string ReaderCorpus::getContextWords() {
    string retString;
    for (int i = 0 ; i < 11 ; i++) {
@@ -396,14 +532,41 @@ string ReaderCorpus::getContextWords() {
    return(retString);
 }
 
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string ReaderCorpus::getPrevContext() {
    return(prevContext);
 }
 
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string ReaderCorpus::getCurrWord() {
    return(currWord);
 }
 
+// X-----------------------X
+// |    #NAME    |
+// X-----------------------X
+// Description:      
+// Parameters:       
+// Preconditions:    
+// Postconditions:   
+// Return value:     
+// Functions called: 
 string ReaderCorpus::getPostContext() {
    return(postContext);
 }
