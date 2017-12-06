@@ -575,3 +575,5 @@ string ReaderCorpus::getCurrWord() const {
 string ReaderCorpus::getPostContext() const {
    return(postContext);
 }
+
+// ---- END STUDENT CODE ----
