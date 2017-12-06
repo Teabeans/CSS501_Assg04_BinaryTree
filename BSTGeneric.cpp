@@ -559,7 +559,7 @@ bool BSTGeneric<typeT>::insert(typeT& someData) { // Receiving by reference
 //                   traverseInOrder - Prints tree in an in-order traversal
 //                   traversePostOrder() - Optional
 template <class typeT>
-void BSTGeneric<typeT>::printout() const {
+void BSTGeneric<typeT>::printout() {
    // traversePreOrder();
    // cout << endl;
    traverseInOrder();
