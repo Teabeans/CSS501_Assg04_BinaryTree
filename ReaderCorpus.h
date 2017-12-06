@@ -168,9 +168,9 @@
 
 using namespace std;
 
-// X---------------------X
-// |    #ReaderCorpus    |
-// X---------------------X
+//-------------------------------------|
+// #ReaderCorpus {}
+//-------------------------------------|
 // Description: Performs corpus-related operations.
 class ReaderCorpus {
 
