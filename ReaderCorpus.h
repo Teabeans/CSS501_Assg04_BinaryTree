@@ -415,3 +415,5 @@ string getCurrWord() const;
 string getPostContext() const;
 
 };
+
+// ---- END STUDENT CODE ----
