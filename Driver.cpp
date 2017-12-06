@@ -13,12 +13,10 @@
 // Driver.cpp
 // BSTGeneric.h
 // BSTGeneric.cpp
-// NodeGeneric.cpp
 // ReaderCorpus.h
 // ReaderCorpus.cpp
 // LinkedListContext.h
 // LinkedListContext.cpp
-// NodeContext.cpp
 // stopwords.txt (recommended)
 // Corpus (not named, name must be passed as a command argument)
 //
@@ -153,7 +151,7 @@
 // Global Variables
 // Control Variables (omitted for submission)
 // Unit Tests (omitted for submission)
-// Program Body
+// Assignment Driver
 
 
 
@@ -170,7 +168,7 @@
 #include <string>
 
 // The NodeGeneric used in a BSTGeneric class
-#include "NodeGeneric.cpp"
+// #include "NodeGeneric.cpp"
 
 // The BSTGeneric class - Used to create a stopword list and a concordance tree.
 #include "BSTGeneric.h"
@@ -264,19 +262,22 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
          // Check to see if the current word appears on the stoplist. If not...
          if (!stopListBST.find(theScribe.getCurrWord())) {
             // attempt to insert the current LinkedListContext output
-            concordanceBST.insert(*theScribe.makeLinkedListContext());
+            LinkedListContext* thisList = theScribe.makeLinkedListContext();
+            concordanceBST.insert(*thisList); // ERROR: Leaks coming from this line
+            delete thisList;
          }
          // And move the reader up one word
          theScribe.advance();
       } // Closing while-loop. Reader has parsed the entire corpus.
 
 
+
 // X-------------------------------X
 // |    Display the Concordance    |
 // X-------------------------------X
       concordanceBST.printout();
-
    }
+
    return(0);
 }
 
