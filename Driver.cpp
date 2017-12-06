@@ -131,7 +131,7 @@
 // 1. Go to the top menu bar => Debug => <ProjectName> Properties => Debugging => Command Arguments =>
 // 2. "< <Filepath>/<Filename>.txt" ie. "< /Sudoku.txt"
 // ie. < /Sudoku.txt
-//
+//sud
 // To pass a command argument:
 // 1. Go to the top menu bar => Debug => <ProjectName> Properties => Debugging => Command Arguments =>
 // 2. Enter the file address and name
@@ -261,9 +261,10 @@ int main( int argc, char* argv[] ) {  // Array of command-line arguments strings
       while (!theScribe.isFinished()) {
          // Check to see if the current word appears on the stoplist. If not...
          if (!stopListBST.find(theScribe.getCurrWord())) {
-            // attempt to insert the current LinkedListContext output
+            // Attempt to insert the current LinkedListContext output
             LinkedListContext* thisList = theScribe.makeLinkedListContext();
-            concordanceBST.insert(*thisList); // ERROR: Leaks coming from this line
+            concordanceBST.insert(*thisList);
+            // Deallocate the thing we just merged in.
             delete thisList;
          }
          // And move the reader up one word
