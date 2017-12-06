@@ -5,7 +5,7 @@
 // Autumn 2017, Graduate Certificate in Software Design & Development (GCSDD)
 //
 // File Description:
-// This file is the driver file for the Concordance Assignment. This program shall accept a list of
+// This file is the implementation of the BSTGeneric class. This program shall accept a list of
 // stopwords (stopwords.txt) as well as a command argument corpus location. From these bodies of data
 // it will generate a concordance in KeyWord In Context (KWIC) format.
 //
@@ -13,12 +13,10 @@
 // Driver.cpp
 // BSTGeneric.h
 // BSTGeneric.cpp
-// NodeGeneric.cpp
 // ReaderCorpus.h
 // ReaderCorpus.cpp
 // LinkedListContext.h
 // LinkedListContext.cpp
-// NodeContext.cpp
 // stopwords.txt (recommended)
 // Corpus (not named, name must be passed as a command argument)
 //
@@ -166,9 +164,6 @@
 // Field and method declarations for the BSTGeneric class
 #include "BSTGeneric.h"
 
-// Node definition for a generic node (holding data, left, and right)
-#include "NodeGeneric.cpp"
-
 using namespace std;
 
 
@@ -182,19 +177,19 @@ using namespace std;
 // Do not reinitialize these variables in the .cpp.
 // Included here for reference
 
-// X-----------------X
-// |    #treeData    |
-// X-----------------X
-// String holding the name or identifier of this tree. Used for debugging.
-// Invariant information: 
+//-------------------------------------|
+// #treeData
+//-------------------------------------|
+// Description: The target node of this linked list
+// Invariants:  String holding the name or identifier of this tree.
 //     template <class typeT>
 //     string treeData = "";
 
-// X----------------X
-// |    #rootPtr    |
-// X----------------X
-// NodeGeneric pointer to the root node of this tree.
-// Invariant information: 
+//-------------------------------------|
+// #rootPtr
+//-------------------------------------|
+// Description: NodeGeneric pointer to the root node of this tree.
+// Invariants:  Points to either nullptr or a NodeGeneric struct
 //     template <class typeT>
 //     NodeGeneric<typeT>* rootPtr;
 
@@ -206,23 +201,20 @@ using namespace std;
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-
-// #deletePostOrder() - Helper method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #deletePostOrder()
+//-------------------------------------|
+// Description:      Helper method for post-order deletion method
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   All nodes have been deleted
+// Return value:     True - Signal of successful deletion traversal
+//                   False - No deletion possible (empty tree)
+// Functions called: deletePostOrder()
 template <class typeT>
 bool BSTGeneric<typeT>::deletePostOrder() {
-   // cout << "deletePostOrder() called." << endl; // DEBUG
    // Check for empty tree
    if (rootPtr == nullptr) {
-      // cout << "No traversal possible. This tree is empty." << endl;
       return (false);
    }
    // Otherwise, return the results of the recursive traversal
@@ -231,16 +223,15 @@ bool BSTGeneric<typeT>::deletePostOrder() {
    }
 }
 
-// #deletePostOrder(nodePtr) - Recursive method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #deletePostOrder()
+//-------------------------------------|
+// Description:      Recursive method for post-order deletion method
+// Parameters:       NodeGeneric* - The target node to be traversed and deleted
+// Preconditions:    None
+// Postconditions:   All nodes in this subtree have been deleted
+// Return value:     True - Signal of successful deletion traversal
+// Functions called: deletePostOrder()
 template <class typeT>
 bool BSTGeneric<typeT>::deletePostOrder(NodeGeneric<typeT>* thisNode) {
    // Left traverse
@@ -252,45 +243,39 @@ bool BSTGeneric<typeT>::deletePostOrder(NodeGeneric<typeT>* thisNode) {
       deletePostOrder(thisNode->rightPtr);
    }
    // Visit (delete)
-   cout << "Poof! " << thisNode->nodeData << endl; // DEBUG
    delete thisNode;
    return(true);
 }
 
-
-
-// #obliviate() - Deletes all nodes within the BST, leaving headPtr pointing at nullptr
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #obliviate()
+//-------------------------------------|
+// Description:      Deletes all nodes within the BST
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   All tree nodes have been deleted.
+//                   headNodePtr == nullptr
+// Return value:     None
+// Functions called: deletePostOrder()
 template <class typeT>
 void BSTGeneric<typeT>::obliviate() {
-   cout << "Obliviate!" << endl; // DEBUG
    deletePostOrder();
 }
 
-// #traversePreOrder() - Helper method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traversePreOrder()
+//-------------------------------------|
+// Description:      Helper method for pre-order traversal method
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+//                   False - No traversal possible
+// Functions called: traversePreOrder()
 template <class typeT>
 bool BSTGeneric<typeT>::traversePreOrder() {
-   // cout << "Pre-Order : " << endl;
    // Check for empty tree
    if (rootPtr == nullptr) {
-      // cout << "No traversal possible. This tree is empty." << endl;
       return (false);
    }
    // Otherwise, return the results of the recursive traversal
@@ -299,20 +284,19 @@ bool BSTGeneric<typeT>::traversePreOrder() {
    }
 }
 
-// #traversePreOrder(nodePtr) - Recursive method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traversePreOrder(NodeGeneric*)
+//-------------------------------------|
+// Description:      Recursive pre-order traversal method
+// Parameters:       NodeGeneric* arg1 - Pointer to the node to traverse
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+// Functions called: traversePreOrder()
+//                   visit()
 template <class typeT>
 bool BSTGeneric<typeT>::traversePreOrder(NodeGeneric<typeT>* thisNode) {
    visit(thisNode);
-   // cout << " , "; // DEBUG
    if (thisNode->leftPtr != nullptr) {
       traversePreOrder(thisNode->leftPtr);
    }
@@ -322,22 +306,20 @@ bool BSTGeneric<typeT>::traversePreOrder(NodeGeneric<typeT>* thisNode) {
    return(true);
 }
 
-// #traverseInOrder() - Helper method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traverseInOrder()
+//-------------------------------------|
+// Description:      Helper method for in-order traversal method
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+//                   False - No traversal possible
+// Functions called: traverseInOrder()
 template <class typeT>
 bool BSTGeneric<typeT>::traverseInOrder() {
-   // cout << "In-Order  : " << endl;
    // Check for empty tree
    if (rootPtr == nullptr) {
-      // cout << "No traversal possible. This tree is empty." << endl;
       return (false);
    }
    // Otherwise, return the results of the recursive traversal
@@ -346,45 +328,42 @@ bool BSTGeneric<typeT>::traverseInOrder() {
    }
 }
 
-// #traverseInOrder(nodePtr) - Recursive method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traverseInOrder(NodeGeneric*)
+//-------------------------------------|
+// Description:      Recursive in-order traversal method
+// Parameters:       NodeGeneric* arg1 - Pointer to the node to traverse
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+// Functions called: traverseInOrder()
+//                   visit()
 template <class typeT>
 bool BSTGeneric<typeT>::traverseInOrder(NodeGeneric<typeT>* thisNode) {
    if (thisNode->leftPtr != nullptr) {
       traverseInOrder(thisNode->leftPtr);
    }
    visit(thisNode);
-   // cout << " , "; // DEBUG
    if (thisNode->rightPtr != nullptr) {
       traverseInOrder(thisNode->rightPtr);
    }
    return(true);
 }
 
-// #traversePostOrder() - Helper method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traversePostOrder()
+//-------------------------------------|
+// Description:      Helper method for post-order traversal method
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+//                   False - No traversal possible
+// Functions called: traversePostOrder()
 template <class typeT>
 bool BSTGeneric<typeT>::traversePostOrder() {
-   // cout << "Post-Order: " << endl;
    // Check for empty tree
    if (rootPtr == nullptr) {
-      // cout << "No traversal possible. This tree is empty." << endl;
       return (false);
    }
    // Otherwise, return the results of the recursive traversal
@@ -393,15 +372,16 @@ bool BSTGeneric<typeT>::traversePostOrder() {
    }
 }
 
-// X-----------------------------------X
-// |    #traversePostOrder(nodePtr)    |
-// X-----------------------------------X
-// Description:      Recursive method
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traversePostOrder(NodeGeneric*)
+//-------------------------------------|
+// Description:      Recursive post-order traversal method
+// Parameters:       NodeGeneric* arg1 - Pointer to the node to traverse
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+// Functions called: traversePostOrder()
+//                   visit()
 template <class typeT>
 bool BSTGeneric<typeT>::traversePostOrder(NodeGeneric<typeT>* thisNode) {
    if (thisNode->leftPtr != nullptr) {
@@ -413,19 +393,18 @@ bool BSTGeneric<typeT>::traversePostOrder(NodeGeneric<typeT>* thisNode) {
    }
 
    visit(thisNode);
-   // cout << " , "; // DEBUG
    return(true);
 }
 
-// X-----------------------X
-// |    #visit(nodePtr)    |
-// X-----------------------X
+//-------------------------------------|
+// #visit(NodeGeneric)
+//-------------------------------------|
 // Description:      Visits the node indicated by sending the nodeData content to cout.
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       NodeGeneric* - The target node being visited
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     None
+// Functions called: None
 template <class typeT>
 void BSTGeneric<typeT>::visit(NodeGeneric<typeT>* thisNodePtr) const {
    // Visit the node, but only perform an action if the node is undeleted
@@ -436,7 +415,6 @@ void BSTGeneric<typeT>::visit(NodeGeneric<typeT>* thisNodePtr) const {
    }
    // Otherwise the node is "deleted", so do nothing.
    else {
-      // cout << "This node is deleted." << endl; // DEBUG
    }
 }
 
@@ -456,17 +434,18 @@ void BSTGeneric<typeT>::visit(NodeGeneric<typeT>* thisNodePtr) const {
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X---------------------X
-// |    #find(string)    |
-// X---------------------X
+//-------------------------------------|
+// #find(typeT)
+//-------------------------------------|
 // Finds a node with an equal value of the string argument
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       typeT - The data to search for
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - An equivalent node was found
+//                   False - An equivalent node was not found
+// Functions called: None
 template <class typeT>
-bool BSTGeneric<typeT>::find(string someValue) {
+bool BSTGeneric<typeT>::find(typeT someData) const {
    // If the tree is empty, do nothing
    if (rootPtr == nullptr) {
       cout << "No value found. This tree is empty." << endl;
@@ -478,93 +457,85 @@ bool BSTGeneric<typeT>::find(string someValue) {
       // While we haven't run off the end of the tree...
       while (currPtr != nullptr) {
          // Found it! (And it's undeleted)
-         if (currPtr->nodeData == someValue && currPtr->isDeleted == false) {
+         if (currPtr->nodeData == someData && currPtr->isDeleted == false) {
             return(true);
          }
          // Found it! (But it's deleted)
-         else if (currPtr->nodeData == someValue && currPtr->isDeleted == true) {
+         else if (currPtr->nodeData == someData && currPtr->isDeleted == true) {
             return(false);
          }
-         else if (someValue < currPtr->nodeData) {
+         // Otherwise, go left if someData is less than this node
+         else if (someData < currPtr->nodeData) {
             currPtr = currPtr->leftPtr;
          }
-         else if (someValue > currPtr->nodeData) {
+         // Or right if greater
+         else if (someData > currPtr->nodeData) {
             currPtr = currPtr->rightPtr;
          }
-      } // Closing while loop. We've either exited (found the value) or run off the tree
+      } // Closing while loop. We've either exited (found the value above)...
+      // ... or run off the tree.
       return(false);
    }
-}
+} // Closing find()
 
-// X------------------------X
-// |    #insert(<typeT>)    |
-// X------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #insert(typeT)
+//-------------------------------------|
+// Description:      Attempts to insert data of typeT to the tree
+// Parameters:       typeT arg1 - The data to insert
+// Preconditions:    None
+// Postconditions:   Data has been found or search has run off the tree
+//                   Data has been assigned to an appropriate node of the tree
+// Return value:     True - Data was not found in the tree. Assigned off a leaf.
+//                   False - Data found in the tree, assignment still occured
+// Functions called: NodeGeneric()
 template <class typeT>
 bool BSTGeneric<typeT>::insert(typeT& someData) { // Receiving by reference
-   // cout << "Insert() called" << endl; // DEBUG
-   // cout << "NodeData: " << someData << endl; // DEBUG
    NodeGeneric<typeT>* currNodePtr = rootPtr;
    NodeGeneric<typeT>* prevNodePtr = nullptr;
    // Initial case: If tree is empty, insert a new node at the root
    if (rootPtr == nullptr) {
-      // cout << "BSTGen.Inserting at root!" << endl; // DEBUG
-
-
-      rootPtr = new NodeGeneric<typeT>(someData); // BUG - Should not be calling the generic node constructor...
-      // cout << endl << endl << "New node created with data and assigned to BST rootPtr. \nBSTGeneric.insert() completed successfully." << endl;
-      // cout << "RootPtr: " << rootPtr->nodeData << endl << endl; // DEBUG
+      rootPtr = new NodeGeneric<typeT>(someData);
       // And halt execution
       return(true);
    }
+   // X------------------------X
+   // |    Node Comparisons    |
+   // X------------------------X
    // Otherwise, while the current node pointer is not off the end of a leaf...
    while (currNodePtr != nullptr) {
-   // X-----------------------X
-   // |    Node Comparison    |
-   // X-----------------------X
-
       // X-------------X
       // |    Equal    |
       // X-------------X
-
       if (currNodePtr->nodeData == someData) {
-         // cout << "Node Equality detected" << endl; // DEBUG
-         // Check if it's deleted
+         // Undelete if necessary
          if (currNodePtr->isDeleted == true) {
             // Undelete it if so
             currNodePtr->isDeleted = false;
-            // And assign someData to the current node data field
-            // This will trigger a LLC operator=() call
-            // cout << "BST.insert() - BST assigning!" << endl;
-            currNodePtr->nodeData = someData; // Testing, 2017.12.04
          }
-         // Else the node isn't deleted, so do nothing to the deletion flag
-         else {
-            // cout << "This node already exists: " << someData << endl; // DEBUG
-            // cout << "BST.insert() - BST assigning!" << endl;
-            currNodePtr->nodeData = someData; // Testing, 2017.12.04
-            return(false);
-         }
+         currNodePtr->nodeData = someData;
+         return(false);
       }
-      // Otherwise, if the insert data is less than the current node data...
+      // X-----------------X
+      // |    Less than    |
+      // X-----------------X
       else if (someData < currNodePtr->nodeData) {
          // Move left
          prevNodePtr = currNodePtr;
          currNodePtr = currNodePtr->leftPtr;
       }
-      // Otherwise, if the insert data is greater than the current node data...
+      // X--------------------X
+      // |    Greater than    |
+      // X--------------------X
       else if (someData > currNodePtr->nodeData) {
          // Move right
          prevNodePtr = currNodePtr;
          currNodePtr = currNodePtr->rightPtr;
       }
    } // Ending tree descent. Curr is now nullptr, Prev is the node pointing at Curr
-
+   // X--------------------------X
+   // |    Insertions off end    |
+   // X--------------------------X
    // If insert data is less than this node data, insert left
    if (someData < prevNodePtr->nodeData) {
       prevNodePtr->leftPtr = new NodeGeneric<typeT>(someData);
@@ -574,37 +545,39 @@ bool BSTGeneric<typeT>::insert(typeT& someData) { // Receiving by reference
       prevNodePtr->rightPtr = new NodeGeneric<typeT>(someData);
    }
    return(true);
-}
+} // Closing insert()
 
-// X-------------------X
-// |    #printout()    |
-// X-------------------X
-// Method capable of traversing the BST in pre-, post-, and in-order traversals
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #printout()
+//-------------------------------------|
+// Description:      Prints the tree to console
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     None
+// Functions called: traversePreOrder() - Optional
+//                   traverseInOrder - Prints tree in an in-order traversal
+//                   traversePostOrder() - Optional
 template <class typeT>
-void BSTGeneric<typeT>::printout() {
+void BSTGeneric<typeT>::printout() const {
    // traversePreOrder();
    // cout << endl;
    traverseInOrder();
    cout << endl;
    // traversePostOrder();
    // cout << endl;
-}
+} // Closing ptintout()
 
-// #setDelete() -
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #setDelete()
+//-------------------------------------|
+// Description:      Finds a node with matching data and sets its deletion flag to true
+// Parameters:       typeT - The target data to find
+// Preconditions:    None
+// Postconditions:   Target node has been set to deleted or nothing happens
+// Return value:     True - 'Deletion' successful
+//                   False - Node not found
+// Functions called: retrieve()
 template <class typeT>
 bool BSTGeneric<typeT>::setDelete(typeT someData) {
    NodeGeneric<typeT>* targetNodePtr = this->retrieve(someData);
@@ -613,7 +586,7 @@ bool BSTGeneric<typeT>::setDelete(typeT someData) {
       return(true);
    }
    return(false);
-}
+} // Closing setDelete()
 
 
 
@@ -623,34 +596,36 @@ bool BSTGeneric<typeT>::setDelete(typeT someData) {
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X---------------------X
-// |    #BSTGeneric()    |
-// X---------------------X
+//-------------------------------------|
+// #BSTGeneric()
+//-------------------------------------|
 // Default constructor for the BSTGeneric class
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   An empty binary tree has been allocated
+// Return value:     None
+// Functions called: None
 template <class typeT>
 BSTGeneric<typeT>::BSTGeneric() {
-   // Make a default node of typeT
-   LinkedListContext defaultList(); // TODO: Remove this
+   treeData = "NameGoesHere";
    this->rootPtr = nullptr;
-   // cout << "Default genericBST constructor called. RootPtr set to nullptr" << endl; // DEBUG
 }
 
-// X---------------------------X
-// |    #BSTGeneric(string)    |
-// X---------------------------X
+//-------------------------------------|
+// #BSTGeneric(string)
+//-------------------------------------|
 // Constructor of the BSTGeneric class from a file address
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       string arg1 - A file address (name)
+// Preconditions:    None
+// Postconditions:   A binary tree of strings has been generated
+// Return value:     None
+// Functions called: insert()
+//                   ifstream.open()
+//                   ifstream.close()
 template <class typeT>
 BSTGeneric<typeT>::BSTGeneric(string fileAddress) {
+   treeData = "NameGoesHere";
+   rootPtr = nullptr;
    // String for storing a single word
    string aWord;
    // Generate the Input File Stream (ifstream) object
@@ -658,7 +633,7 @@ BSTGeneric<typeT>::BSTGeneric(string fileAddress) {
    fileInputObj.open(fileAddress);
    // Confirm that file was opened. Report otherwise if not.
    if (!fileInputObj) {
-    cout << "Unable to open file";
+      cout << "Unable to open file";
    }
    // Read the file
    while (fileInputObj >> aWord) {
@@ -668,15 +643,15 @@ BSTGeneric<typeT>::BSTGeneric(string fileAddress) {
    fileInputObj.close();
 }
 
-// X----------------------X
-// |    #~BSTGeneric()    |
-// X----------------------X
+//-------------------------------------|
+// #~BSTGeneric()
+//-------------------------------------|
 // Default destructor of the BSTGeneric class
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   All memory allocated for BST Nodes has been deallocated
+// Return value:     None
+// Functions called: obliviate()
 template <class typeT>
 BSTGeneric<typeT>::~BSTGeneric() {
    this->obliviate();
@@ -689,44 +664,46 @@ BSTGeneric<typeT>::~BSTGeneric() {
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------------X
-// |    #getRootValue()    |
-// X-----------------------X
-// Returns the root node's data field
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #getRootValue()
+//-------------------------------------|
+// Description:      Returns the root node's data field
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     typeT& - A generic data object
+// Functions called: None
 template <class typeT>
-typeT& BSTGeneric<typeT>::getRootValue() {
+typeT& BSTGeneric<typeT>::getRootValue() const{
    return rootPtr->nodeData;
 }
 
-// X-------------------X
-// |    #getValue()    |
-// X-------------------X
-// Returns the tree's data field (its name)
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #getValue()
+//-------------------------------------|
+// Description:      Returns the tree's data field (its name)
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     string - The name of the tree
+// Functions called: None
 template <class typeT>
-string BSTGeneric<typeT>::getValue() {
-   return BSTtreeData;
+string BSTGeneric<typeT>::getValue() const {
+   return treeData;
 }
 
-// X-------------------X
-// |    #setValue()    |
-// X-------------------X
-// Sets the tree's data field (its name)
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #setValue()
+//-------------------------------------|
+// Description:      Sets the tree's data field (its name)
+// Parameters:       string arg1 - The name to enter
+// Preconditions:    None
+// Postconditions:   treeData == someValue
+// Return value:     None
+// Functions called: None
 template <class typeT>
 void BSTGeneric<typeT>::setValue( string someValue ) {
-   BSTtreeData = someValue;
+   treeData = someValue;
 }
+
+// ---- END STUDENT CODE ----
