@@ -5,7 +5,7 @@
 // Autumn 2017, Graduate Certificate in Software Design & Development (GCSDD)
 //
 // File Description:
-// This file is the driver file for the Concordance Assignment. This program shall accept a list of
+// This file is the header file for the LinkedListContext class. This program shall accept a list of
 // stopwords (stopwords.txt) as well as a command argument corpus location. From these bodies of data
 // it will generate a concordance in KeyWord In Context (KWIC) format.
 //
@@ -13,12 +13,10 @@
 // Driver.cpp
 // BSTGeneric.h
 // BSTGeneric.cpp
-// NodeGeneric.cpp
 // ReaderCorpus.h
 // ReaderCorpus.cpp
 // LinkedListContext.h
 // LinkedListContext.cpp
-// NodeContext.cpp
 // stopwords.txt (recommended)
 // Corpus (not named, name must be passed as a command argument)
 //
@@ -162,9 +160,6 @@
 // Necessary for string operations
 #include <string>
 
-// Node definition for a context node (holding data1, data2, next)
-#include "NodeContext.cpp"
-
 using namespace std;
 
 // X--------------------------X
@@ -175,6 +170,41 @@ class LinkedListContext {
 
 
 
+protected:
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       STRUCTS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+//-------------------------------------|
+// #NodeContext()
+//-------------------------------------|
+// Description: Linked List node holding previous and post context
+// Invariants:  No default constructor should be called under normal operation
+struct NodeContext {
+   string prevContext;
+   string postContext;
+   NodeContext* nextPtr;
+   int lengthOfPrevContext;
+
+   NodeContext() {
+      prevContext = "Default NodeContext()";
+      postContext = "For Test Purpose Only";
+      nextPtr = nullptr;
+      lengthOfPrevContext = 0;
+   }
+
+   NodeContext(string wordsBefore, string wordsAfter) {
+      prevContext = wordsBefore;
+      postContext = wordsAfter;
+      lengthOfPrevContext = wordsBefore.length();
+      nextPtr = nullptr;
+   }
+}; // Closing NodeContext{}
+
+
+
 private:
 //-------|---------|---------|---------|---------|---------|---------|---------|
 //
@@ -182,59 +212,41 @@ private:
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #currPtr
+//-------------------------------------|
+// Description: The target node of this linked list
+// Invariants:  Range from HeadNode to nullptr
 NodeContext* currPtr;
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #headNodePtr
+//-------------------------------------|
+// Description: Pointer to the head node of this linked list
+// Invariants:  Shall always point to a node under normal operation
 NodeContext* headNodePtr;
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #keywordFormatLength
+//-------------------------------------|
+// Description: Static int representing the longest observed prevContext string
+// Invariants:  Value from 1 to the longest possible word sequence
+//              Output format degrades at high values (~30+)
 static int formatLength;
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #keywordFormatLength
+//-------------------------------------|
+// Description: Static int representing the longest observed keyword
+// Invariants:  Value from 1 to the longest possible word
+//              Output format degrades at high values (~20+)
 static int keywordFormatLength;
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #keyword
+//-------------------------------------|
+// Description: Keyword of this LinkedListContext object
+// Invariants:  String will begin and end with characters 'a' to 'z', inclusive
 string keyword; // Inherited from the BSTConcordance node
 
 
@@ -245,53 +257,55 @@ string keyword; // Inherited from the BSTConcordance node
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// #advance() - If currPtr is not the last node, moves currPtr forward one body node per call
-// X----------------X
-// |    #NAME    |
-// X----------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #advance()
+//-------------------------------------|
+// Description:      Attempts to move currPtr forward one body node.
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   currPtr is one node further in the linked list
+// Return value:     cout - Error message declaring failure to advance
+// Functions called: isLastNode()
 void advance();
 
-// #append(string, string) - Adds a new node to the Linked List using the provided contexts
-// X----------------X
-// |    #NAME    |
-// X----------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #append(string, string)
+//-------------------------------------|
+// Description:      Adds a new node to the Linked List
+//                   Updates the maximum observed prev context length.
+// Parameters:       string arg1 - The previous context to append
+//                   string arg2 - The post context to append
+// Preconditions:    None
+// Postconditions:   A new context node has been added to the end of the linked list
+// Return value:     None
+// Functions called: NodeContext()
+//                   advance()
+//                   isLastNode()
+//                   reset()
+//                   string.length()
 void append(string prevContext, string postContext);
 
-// #isLastNode() - Reports whether the currPtr points to the last body node.
-// X----------------X
-// |    #NAME    |
-// X----------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #isLastNode()
+//-------------------------------------|
+// Description:      Reports whether the currPtr points to the last body node.
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - There are no further nodes in the list
+//                   False - There is a valid next node
+// Functions called: None
 bool isLastNode();
 
-// #reset() - Sets the currPtr back to the head node
-// X----------------X
-// |    #reset()    |
-// X----------------X
-// #reset() - Sets the current node pointer to the head node
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #reset()
+//-------------------------------------|
+// Description:      Sets the currPtr node pointer to the head node
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   currPtr is equal to headNodePtr
+// Return value:     None
+// Functions called: None
 void reset();
 
 
@@ -313,15 +327,18 @@ public:
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-------------------X
-// |    #toString()    |
-// X-------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #toString()
+//-------------------------------------|
+// Description:      String output generator for a LinkedListContext object
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     String - A representation of this LinkedListContext object
+// Functions called: advance()
+//                   isLastNode()
+//                   reset()
+//                   string.length()
 string toString();
 
 
@@ -332,40 +349,39 @@ string toString();
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// Default constructor
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #LinkedListContext()
+//-------------------------------------|
+// Description:      Default constructor for the LinkedListContext class
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   A new LinkedListContext object has been allocated
+// Return value:     None
+// Functions called: None
 LinkedListContext();
 
-// Constructor for a head node's keyword and context
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #LinkedListContext(string, string, string)
+//-------------------------------------|
+// Description:      Constructs a LinkedListContext object from three strings
+// Parameters:       string arg1 - The previous context of a keyword
+//                   string arg2 - The keyword string
+//                   string arg3 - The post context of a keyword
+// Preconditions:    None
+// Postconditions:   A new LinkedListContext object has been allocated
+// Return value:     None
+// Functions called: string.length()
 LinkedListContext(string someKeyword, string prevContext, string postContext);
 
-// #~LinkedListContext() - Destructor for a LinkedListContext
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #~LinkedListContext()
+//-------------------------------------|
+// Description:      Destructor for the LinkedListContext class
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   All context nodes have been deallocated
+// Return value:     None
+// Functions called: advance()
 ~LinkedListContext();
 
 
@@ -376,27 +392,39 @@ LinkedListContext(string someKeyword, string prevContext, string postContext);
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #getPrevContext(NodeContext*)
+//-------------------------------------|
+// Description:      Returns the prevContext field of a target NodeContext
+// Parameters:       NodeContext* arg1 - A pointer to a target NodeContext
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     string - The prevContext string of the targeted NodeContext
+// Functions called: None
 string getPrevContext(const NodeContext* currNodePtr) const;
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #getKeyword()
+//-------------------------------------|
+// Description:      Returns the keyword field of this LinkedListContext
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     string - The keyword string of this object
+// Functions called: None
+string getKeyword() const;
+
+//-------------------------------------|
+// #getPostContext(NodeContext*)
+//-------------------------------------|
+// Description:      Returns the postContext field of a target NodeContext
+// Parameters:       NodeContext* arg1 - A pointer to a target NodeContext
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     string - The postContext string of the targeted NodeContext
+// Functions called: None
 string getPostContext(const NodeContext* currNodePtr) const;
+
 
 
 //-------|---------|---------|---------|---------|---------|---------|---------|
@@ -405,66 +433,67 @@ string getPostContext(const NodeContext* currNodePtr) const;
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// #operator< - Custom behavior for the less-than operator
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool LinkedListContext::operator<(const LinkedListContext& someLinkedList) const;
+//-------------------------------------|
+// #operator<(LinkedListContext)
+//-------------------------------------|
+// Description:      Custom behavior for the less-than operator
+// Parameters:       LinkedListContext& arg1 - Object being compared against 'this'
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True  - Arg1 keyword is greater than 'this' keyword
+//                   False - Arg1 keyword is less    than 'this' keyword
+// Functions called: None
+bool operator<(const LinkedListContext& someLinkedList) const;
 
-// #operator> - Custom behavior for the less-than operator
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool LinkedListContext::operator>(const LinkedListContext& someLinkedList) const;
+// #operator> - Custom behavior for the less-than operator for this (RHarg) and another LinkedListContext (LHarg)
+//-------------------------------------|
+// #operator>(LinkedListContext)
+//-------------------------------------|
+// Description:      Custom behavior for the greater-than operator
+// Parameters:       LinkedListContext& arg1 - Object being compared against 'this'
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True  - Arg1 keyword is less    than 'this' keyword
+//                   False - Arg1 keyword is greater than 'this' keyword
+// Functions called: None
+bool operator>(const LinkedListContext& someLinkedList) const;
 
-// #operator== - Custom behavior for the equality operator
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool LinkedListContext::operator==(const LinkedListContext& someLinkedList) const;
+//-------------------------------------|
+// #operator=(LinkedListContext)
+//-------------------------------------|
+// Description:      Custom behavior for the equality operator
+// Parameters:       LinkedListContext& arg1 - Object being compared against 'this'
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - The keywords are equivalent
+//                   False - The keywords are inequal
+// Functions called: None
+bool operator==(const LinkedListContext& someLinkedList) const;
 
-// #operator= - Custom behavior for the assignment operator
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #operator=(LinkedListContext)
+//-------------------------------------|
+// Description:      Custom behavior for the assignment operator.
+// Parameters:       LinkedListContext arg1 - The data being assigned
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     LinkedListContext& - A keyword with additional context
+// Functions called: append()
 LinkedListContext& operator=(LinkedListContext& someLinkedList);
 
-// #operator<< - 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #operator<<(ostream, LinkedListContext)
+//-------------------------------------|
+// Description:      Custom behavior for the stream insertion operator
+// Parameters:       ostream& arg1 - The receiving stream
+//                   LinkedListContext& arg2 - The object being inserted
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     ostream& - The appended ostream object
+// Functions called: toString()
 friend ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList);
 
 }; // Closing class LinkedListContext
 
-   
+
+// ---- END STUDENT CODE ----
