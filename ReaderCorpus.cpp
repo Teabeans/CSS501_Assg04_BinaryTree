@@ -13,12 +13,10 @@
 // Driver.cpp
 // BSTGeneric.h
 // BSTGeneric.cpp
-// NodeGeneric.cpp
 // ReaderCorpus.h
 // ReaderCorpus.cpp
 // LinkedListContext.h
 // LinkedListContext.cpp
-// NodeContext.cpp
 // stopwords.txt (recommended)
 // Corpus (not named, name must be passed as a command argument)
 //
@@ -185,39 +183,39 @@ using namespace std;
 // Do not reinitialize these variables in the .cpp.
 // Included here for reference
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #contextWords[]
+//-------------------------------------|
+// Description: Array of strings holding up to 11 sequential words from the corpus
+// Invariants:  Strings initialized to empty. Updates on every call to advance()
 // string contextWords[11];
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #prevContext
+//-------------------------------------|
+// Description: String representing the pre-current-word context words
+// Invariants:  Updated on every call to advance()
 // string prevContext;
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #currWord
+//-------------------------------------|
+// Description: String representing the current word being processed
+// Invariants:  Updated on every call to advance()
 // string currWord;
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #postContext
+//-------------------------------------|
+// Description: String representing the post-current-word context words
+// Invariants:  Updated on every call to advance()
 // string postContext;
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #fileObj
+//-------------------------------------|
+// Description: ifstream object which holds the corpus prior to processing
+// Invariants:  None
 // ifstream fileObj;
 
 
@@ -228,37 +226,32 @@ using namespace std;
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// #isFinished() - 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool ReaderCorpus::isFinished() {
-   // If the fileObj is empty and the current word is empty...
-   if (currWord == " ") {
-      // Then this Corpus Reader cannot return any further valid concordance values
-      return(true);
+//-------------------------------------|
+// #isPrimed()
+//-------------------------------------|
+// Description:      Determines whether the corpus reader is ready to return data
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - This Reader is ready
+//                   False - This Reader is not ready
+// Functions called: None
+bool ReaderCorpus::isPrimed() const {
+   if (contextWords[5] != "") {
+      return (true);
    }
-   else {
-      return(false);
-   }
-}
+   return (false);
+} // Closing isLoaded()
 
-// #trimPreNoise(string) - 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #trimPreNoise(string)
+//-------------------------------------|
+// Description:      Deletes noisy characters off the start of a word
+// Parameters:       string arg1 - The string to be rectified
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     A rectified string (if applicable)
+// Functions called: string.erase()
 string ReaderCorpus::trimPreNoise(string aWord) {
    bool firstLetter = false;
    // Load the first character of the string
@@ -282,22 +275,22 @@ string ReaderCorpus::trimPreNoise(string aWord) {
             firstLetter = true;
          } // Closing if
       } // Closing while loop. First character found and currIndex points to it
-   // Delete the substring from the start to the first index
-   aWord.erase(0, (currIndex));
+      // Delete the substring from the word start to the first good index
+      aWord.erase(0, (currIndex));
    }
    return(aWord);
-}
+} // Closing trimPreNoise()
 
-// #trimPostNoise(string) - 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #trimPostNoise(string)
+//-------------------------------------|
+// Description:      Deletes noisy characters off the end of a word
+// Parameters:       string arg1 - The string to be rectified
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     A rectified string (if applicable)
+// Functions called: string.length()
+//                   string.erase()
 string ReaderCorpus::trimPostNoise(string aWord) {
    bool lastLetter = false;
    // Load the last character of the string
@@ -305,7 +298,6 @@ string ReaderCorpus::trimPostNoise(string aWord) {
    char currLetter = aWord[currIndex];
    // Fencepost check. If it's the last actual letter, do nothing
    if ( 'a' <= currLetter && currLetter <= 'z') {
-      // cout << "This is the last letter! " << currLetter << endl; // DEBUG
       lastLetter = true;
    }
    // Otherwise, the last character is noisy, so proceed backward...
@@ -325,7 +317,7 @@ string ReaderCorpus::trimPostNoise(string aWord) {
    aWord.erase((currIndex+1), (aWord.length()));
    }
    return(aWord);
-}
+} // Closing trimPostNoise()
 
 
 //-------|---------|---------|---------|---------|---------|---------|---------|
@@ -334,7 +326,7 @@ string ReaderCorpus::trimPostNoise(string aWord) {
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// None declared in the .cpp
+// None for this class
 
 
 
@@ -344,16 +336,21 @@ string ReaderCorpus::trimPostNoise(string aWord) {
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X------------------X
-// |    #advance()    |
-// X------------------X
-// Description:      Moves the corpus reader forward one word and
-//                   updates the prevContext, currWord, and postContext strings
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #advance()
+//-------------------------------------|
+// Description:      Moves the corpus reader forward one word
+//                   Updates the prevContext string
+//                   Updates the currWord string
+//                   Updates the postContext string
+// Parameters:       None
+// Preconditions:    A file stream object is loaded in a valid scope
+// Postconditions:   One word has been removed from the file stream
+// Return value:     True - Advance() succeeded
+//                   False - Advance() failed
+// Functions called: transform()
+//                   trimPreNoise()
+//                   trimPostNoise()
 bool ReaderCorpus::advance() {
    // Test to see if advance() can even be called
    if (this->isFinished()) {
@@ -370,7 +367,6 @@ bool ReaderCorpus::advance() {
    while (validWord == false) {
       // Attempt to assign the next whitespace delimited chars to nextWord
       fileObj >> nextWord;
-      // cout << "The word just pulled was: " << nextWord << endl; // DEBUG
       // Lowercase the word pulled
       // From https://notfaq.wordpress.com/2007/08/04/cc-convert-string-to-upperlower-case/
       transform(nextWord.begin(), nextWord.end(), nextWord.begin(), ::tolower);
@@ -380,7 +376,8 @@ bool ReaderCorpus::advance() {
          if (nextWord[i] >= 'a' && nextWord[i] <= 'z') {
             validChars = true;
          }
-      } // Word scanned. Is it valid?
+      } // Word scanned.
+      // If there were valid chars, then it's a valid word
       validWord = validChars;
    } // Closing while loop, a valid word has been identified OR we've run off the end of the document.
    // Omit pre-noisy characters
@@ -389,20 +386,22 @@ bool ReaderCorpus::advance() {
    nextWord = this->trimPostNoise(nextWord);
    // If no change was made by the fileObj extraction operator...
    if (nextWord == "foobarbaz") {
-      // Default to a whitespace
+      // Default to a whitespace (this is for end-of-document conditions)
       nextWord = " ";
    }
    // Load the next word to the end of the context array
    contextWords[10] = nextWord;
-   // cout << "The current word is: " << contextWords[5] << endl; // DEBUG
-   // Update the context strings
+   // And update the context strings
    string update = "";
+   // For context[0]-[4]
    for (int i = 0 ; i < 5 ; i++) {
       update = update + contextWords[i] + " ";
    }
    // Update the previous context string
    prevContext = update;
+   // Reset the updater
    update = "";
+   // For context[6]-[10]
    for (int i = 6 ; i < 11 ; i++) {
       update = update + " " + contextWords[i];
    }
@@ -410,34 +409,41 @@ bool ReaderCorpus::advance() {
    postContext = update;
    // Update the current keyword
    currWord = contextWords[5];
+   // Report success
    return(true);
-}
+} // Closing advance()
 
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool ReaderCorpus::isPrimed() {
-   if (contextWords[5] != "") {
-      return (true);
+//-------------------------------------|
+// #isFinished()
+//-------------------------------------|
+// Description:      Determines whether the reader has exhausted the corpus
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - There are no further words to read in the corpus
+//                   False - The reader has not exhausted the corpus
+// Functions called: None
+bool ReaderCorpus::isFinished() const{
+   // If the fileObj is empty and the current word is empty...
+   if (currWord == " ") {
+      // Then this Corpus Reader cannot return any further valid concordance values
+      return(true);
    }
-   return (false);
-} // Closing isLoaded()
+   else {
+      return(false);
+   }
+} // Closing isFinished()
 
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #loadFile(string)
+//-------------------------------------|
+// Description:      Causes the fileObj object to attempt file access
+// Parameters:       String representing a file address
+// Preconditions:    None
+// Postconditions:   A file has been opened into the local filestream or not
+// Return value:     True - File opened successfully
+//                   False - File not accessible
+// Functions called: open()
 bool ReaderCorpus::loadFile(string fileAddy) {
    fileObj.open(fileAddy);
    // Confirm that file was opened. Report otherwise if not.
@@ -445,40 +451,39 @@ bool ReaderCorpus::loadFile(string fileAddy) {
       cout << "Unable to open Corpus. Closing program...";
       return(false);
    }
-   // cout << "File loaded successfully to ReaderCorpus object!" << endl; // DEBUG
    return(true);
-}
+} // Closing loadFile()
 
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #makeLinkedListContext()
+//-------------------------------------|
+// Description:      Generates a LinkedListContext object
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   A new LinkedListContext object is allocated
+// Return value:     LinkedListContext* - Pointer to a new LinkedListContext
+// Functions called: LinkedListContext(string, string, string)
 LinkedListContext* ReaderCorpus::makeLinkedListContext() {
    LinkedListContext* retList = new LinkedListContext(prevContext, contextWords[5], postContext);
    return(retList);
-}
+} // Closing makeLinkedListContext()
 
-// #prime() - Advances the reader to the first valid keyword-context state.
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #prime()
+//-------------------------------------|
+// Description:      Advances the reader to the next valid keyword-context state.
+// Parameters:       None
+// Preconditions:    A file stream has been opened in a valid scope
+// Postconditions:   The next available word is loaded to contextWords[5]
+// Return value:     String representing the current word
+// Functions called: advance()
+//                   isPrimed()
 string ReaderCorpus::prime() {
    while (!isPrimed()) {
       this->advance();
    }
    return(contextWords[5]);
-}
+} // Closing prime()
 
 
 
@@ -488,15 +493,15 @@ string ReaderCorpus::prime() {
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X---------------------X
-// |    #ReaderCorpus()    |
-// X---------------------X
+//-------------------------------------|
+// #ReaderCorpus()
+//-------------------------------------|
 // Description:      Default constructor for the ReaderCorpus class
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   A new ReaderCorpus object is allocated
+// Return value:     None
+// Functions called: None
 ReaderCorpus::ReaderCorpus() {
    // cout << "ReaderCorpus() default constructor called" << endl; // DEBUG
    prevContext = "Nothing to see here!";
@@ -515,16 +520,16 @@ ReaderCorpus::ReaderCorpus() {
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string ReaderCorpus::getContextWords() {
+//-------------------------------------|
+// #getContextWords()
+//-------------------------------------|
+// Description:      Returns all words loaded to contextWords[]
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     String of (11) words maximum
+// Functions called: None
+string ReaderCorpus::getContextWords() const {
    string retString;
    for (int i = 0 ; i < 11 ; i++) {
       retString = retString +  " " + contextWords[i];
@@ -532,41 +537,41 @@ string ReaderCorpus::getContextWords() {
    return(retString);
 }
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string ReaderCorpus::getPrevContext() {
+//-------------------------------------|
+// #getPrevContext()
+//-------------------------------------|
+// Description:      Returns a string representing the previous concordance context
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     String of (5) words maximum
+// Functions called: None
+string ReaderCorpus::getPrevContext() const {
    return(prevContext);
 }
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string ReaderCorpus::getCurrWord() {
+//-------------------------------------|
+// #getCurrWord()
+//-------------------------------------|
+// Description:      Returns the current word of the ReaderCorpus object
+// Parameters:       None
+// Preconditions:    A valid string must be loaded to contextWords[5]
+// Postconditions:   None
+// Return value:     String of (1) word
+// Functions called: None
+string ReaderCorpus::getCurrWord() const {
    return(currWord);
 }
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string ReaderCorpus::getPostContext() {
+//-------------------------------------|
+// #getPostContext()
+//-------------------------------------|
+// Description:      Returns a string representing the post concordance context
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     String of (5) words maximum
+// Functions called: None
+string ReaderCorpus::getPostContext() const {
    return(postContext);
 }
