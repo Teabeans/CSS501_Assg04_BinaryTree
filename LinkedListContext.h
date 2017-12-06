@@ -162,10 +162,12 @@
 
 using namespace std;
 
-// X--------------------------X
-// |    #LinkedListContext    |
-// X--------------------------X
-// Description: Performs corpus-related operations.
+
+
+//-------------------------------------|
+// #LinkedListContext {}
+//-------------------------------------|
+// Description: Performs context-keyword management functions
 class LinkedListContext {
 
 
@@ -494,6 +496,5 @@ LinkedListContext& operator=(LinkedListContext& someLinkedList);
 friend ostream& operator<<(ostream& coutStream, LinkedListContext& someLinkedList);
 
 }; // Closing class LinkedListContext
-
 
 // ---- END STUDENT CODE ----
