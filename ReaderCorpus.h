@@ -5,7 +5,7 @@
 // Autumn 2017, Graduate Certificate in Software Design & Development (GCSDD)
 //
 // File Description:
-// This file is the driver file for the Concordance Assignment. This program shall accept a list of
+// This file is the header file for the ReaderCorpus class. This program shall accept a list of
 // stopwords (stopwords.txt) as well as a command argument corpus location. From these bodies of data
 // it will generate a concordance in KeyWord In Context (KWIC) format.
 //
@@ -13,12 +13,10 @@
 // Driver.cpp
 // BSTGeneric.h
 // BSTGeneric.cpp
-// NodeGeneric.cpp
 // ReaderCorpus.h
 // ReaderCorpus.cpp
 // LinkedListContext.h
 // LinkedListContext.cpp
-// NodeContext.cpp
 // stopwords.txt (recommended)
 // Corpus (not named, name must be passed as a command argument)
 //
@@ -183,39 +181,39 @@ private:
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #contextWords[]
+//-------------------------------------|
+// Description: Array of strings holding up to 11 sequential words from the corpus
+// Invariants:  Strings initialized to empty. Updates on every call to advance()
 string contextWords[11];
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #prevContext
+//-------------------------------------|
+// Description: String representing the pre-current-word context words
+// Invariants:  Updated on every call to advance()
 string prevContext;
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #currWord
+//-------------------------------------|
+// Description: String representing the current word being processed
+// Invariants:  Updated on every call to advance()
 string currWord;
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #postContext
+//-------------------------------------|
+// Description: String representing the post-current-word context words
+// Invariants:  Updated on every call to advance()
 string postContext;
 
-// X-----------------X
-// |    #NAME    |
-// X-----------------X
-// Description: 
-// Invariants:  
+//-------------------------------------|
+// #fileObj
+//-------------------------------------|
+// Description: ifstream object which holds the corpus prior to processing
+// Invariants:  None
 ifstream fileObj;
 
 
@@ -226,37 +224,39 @@ ifstream fileObj;
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool isPrimed();
+//-------------------------------------|
+// #isPrimed()
+//-------------------------------------|
+// Description:      Determines whether the corpus reader is ready to return data
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - This Reader is ready
+//                   False - This Reader is not ready
+// Functions called: None
+bool isPrimed() const;
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #trimPreNoise(string)
+//-------------------------------------|
+// Description:      Deletes noisy characters off the start of a word
+// Parameters:       string arg1 - The string to be rectified
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     A rectified string (if applicable)
+// Functions called: string.erase()
 string trimPreNoise(string aWord);
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #trimPostNoise(string)
+//-------------------------------------|
+// Description:      Method that deletes noisy characters off the end of a word
+// Parameters:       string arg1 - The string to be rectified
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     A rectified string (if applicable)
+// Functions called: string.length()
+//                   string.erase()
 string trimPostNoise(string aWord);
 
 
@@ -277,61 +277,72 @@ public:
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X------------------X
-// |    #advance()    |
-// X------------------X
-// Description:      Moves the corpus reader forward one word and
-//                   updates the prevContext, currWord, and postContext strings
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #advance()
+//-------------------------------------|
+// Description:      Moves the corpus reader forward one word
+//                   Updates the prevContext string
+//                   Updates the currWord string
+//                   Updates the postContext string
+// Parameters:       None
+// Preconditions:    A file stream object is loaded in a valid scope
+// Postconditions:   One word has been removed from the file stream
+// Return value:     True - Advance() succeeded
+//                   False - Advance() failed
+// Functions called: transform()
+//                   trimPreNoise()
+//                   trimPostNoise()
 bool advance();
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool isFinished();
+//-------------------------------------|
+// #isFinished()
+//-------------------------------------|
+// Description:      Determines whether the reader has exhausted the corpus
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - There are no further words to read in the corpus
+//                   False - The reader has not exhausted the corpus
+// Functions called: None
+bool isFinished() const;
 
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #loadFile(string)
+//-------------------------------------|
+// Description:      Causes the fileObj object to attempt file access
+// Parameters:       String representing a file address
+// Preconditions:    None
+// Postconditions:   A file has been opened into the local filestream or not
+// Return value:     True - File opened successfully
+//                   False - File not accessible
+// Functions called: open()
+
 bool loadFile(string fileAddy);
 
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #makeLinkedListContext()
+//-------------------------------------|
+// Description:      Generates a LinkedListContext object
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   A new LinkedListContext object is allocated
+// Return value:     LinkedListContext* - Pointer to a new LinkedListContext
+// Functions called: LinkedListContext(string, string, string)
 LinkedListContext* makeLinkedListContext();
 
-// X------------------X
-// |    #NAME    |
-// X------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #prime()
+//-------------------------------------|
+// Description:      Advances the reader to the next valid keyword-context state.
+// Parameters:       None
+// Preconditions:    A file stream has been opened in a valid scope
+// Postconditions:   The next available word is loaded to contextWords[5]
+// Return value:     String representing the current word
+// Functions called: advance()
+//                   isPrimed()
 string prime();
+
+
 
 //-------|---------|---------|---------|---------|---------|---------|---------|
 //
@@ -339,7 +350,15 @@ string prime();
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// #ReaderCorpus() - Default constructor
+//-------------------------------------|
+// #ReaderCorpus()
+//-------------------------------------|
+// Description:      Default constructor for the ReaderCorpus class
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   A new ReaderCorpus object is allocated
+// Return value:     None
+// Functions called: None
 ReaderCorpus();
 
 
@@ -351,48 +370,48 @@ ReaderCorpus();
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string getContextWords();
+//-------------------------------------|
+// #getContextWords()
+//-------------------------------------|
+// Description:      Returns all words loaded to contextWords[]
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     String of (11) words maximum
+// Functions called: None
+string getContextWords() const;
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string getPrevContext();
+//-------------------------------------|
+// #getPrevContext()
+//-------------------------------------|
+// Description:      Returns a string representing the previous concordance context
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     String of (5) words maximum
+// Functions called: None
+string getPrevContext() const;
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string getCurrWord();
+//-------------------------------------|
+// #getCurrWord()
+//-------------------------------------|
+// Description:      Returns the current word of the ReaderCorpus object
+// Parameters:       None
+// Preconditions:    A valid string must be loaded to contextWords[5]
+// Postconditions:   None
+// Return value:     String of (1) word
+// Functions called: None
+string getCurrWord() const;
 
-// X-----------------------X
-// |    #NAME    |
-// X-----------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string getPostContext();
+//-------------------------------------|
+// #getPostContext()
+//-------------------------------------|
+// Description:      Returns a string representing the post concordance context
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     String of (5) words maximum
+// Functions called: None
+string getPostContext() const;
 
 };
