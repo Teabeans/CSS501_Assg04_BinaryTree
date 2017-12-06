@@ -5,7 +5,7 @@
 // Autumn 2017, Graduate Certificate in Software Design & Development (GCSDD)
 //
 // File Description:
-// This file is the driver file for the Concordance Assignment. This program shall accept a list of
+// This file is the header file for the BSTGeneric class. This program shall accept a list of
 // stopwords (stopwords.txt) as well as a command argument corpus location. From these bodies of data
 // it will generate a concordance in KeyWord In Context (KWIC) format.
 //
@@ -13,12 +13,10 @@
 // Driver.cpp
 // BSTGeneric.h
 // BSTGeneric.cpp
-// NodeGeneric.cpp
 // ReaderCorpus.h
 // ReaderCorpus.cpp
 // LinkedListContext.h
 // LinkedListContext.cpp
-// NodeContext.cpp
 // stopwords.txt (recommended)
 // Corpus (not named, name must be passed as a command argument)
 //
@@ -165,17 +163,54 @@
 // Necessary for file stream operations
 #include <fstream>
 
-// Node definition for a generic node (holding data, left, and right)
-#include "NodeGeneric.cpp"
-
 using namespace std;
 
-// X---------------------X
-// |    #BSTGeneric    |
-// X---------------------X
-// Description: Generic Binary Search Tree (BST)
+
+
+//-------------------------------------|
+// #BSTGeneric {}
+//-------------------------------------|
+// Description: Organizes comparable data types into a binary search tree
 template <class typeT>
 class BSTGeneric {
+
+
+
+protected:
+//-------|---------|---------|---------|---------|---------|---------|---------|
+//
+//       STRUCTS
+//
+//-------|---------|---------|---------|---------|---------|---------|---------|
+
+//-------------------------------------|
+// #NodeGeneric()
+//-------------------------------------|
+// Description: Generic node for use by the GenericBST class
+// Invariants:  No default constructor should be called under normal operation
+   template<class typeC>
+   struct NodeGeneric {
+      typeC nodeData;
+      bool isDeleted;
+      NodeGeneric<typeC>* leftPtr;
+      NodeGeneric<typeC>* rightPtr;
+
+      NodeGeneric() {
+         nodeData = NULL;
+         isDeleted = 1;
+         leftPtr = nullptr;
+         rightPtr = nullptr;
+      }
+
+      NodeGeneric(typeC& someData) {
+         nodeData = someData;
+         isDeleted = 0;
+         leftPtr = nullptr;
+         rightPtr = nullptr;
+      }
+   }; // Closing NodeGeneric
+
+
 
 private:
 //-------|---------|---------|---------|---------|---------|---------|---------|
@@ -184,19 +219,20 @@ private:
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------X
-// |    #treeData    |
-// X-----------------X
-// String holding the name or identifier of this tree. Used for debugging.
-// Invariant information: 
-string BSTGeneric<typeT>::treeData;
+//-------------------------------------|
+// #treeData
+//-------------------------------------|
+// Description: The target node of this linked list
+// Invariants:  String holding the name or identifier of this tree.
+string treeData;
 
-// X----------------X
-// |    #rootPtr    |
-// X----------------X
-// NodeGeneric pointer to the root node of this tree.
-// Invariant information: 
-NodeGeneric<typeT>* BSTGeneric<typeT>::rootPtr;
+//-------------------------------------|
+// #rootPtr
+//-------------------------------------|
+// Description: NodeGeneric pointer to the root node of this tree.
+// Invariants:  Points to either nullptr or a NodeGeneric struct
+NodeGeneric<typeT>* rootPtr;
+
 
 
 //-------|---------|---------|---------|---------|---------|---------|---------|
@@ -205,79 +241,78 @@ NodeGeneric<typeT>* BSTGeneric<typeT>::rootPtr;
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// #deletePostOrder() -
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #deletePostOrder()
+//-------------------------------------|
+// Description:      Recursive method for post-order deletion method
+// Parameters:       NodeGeneric* - The target node to be traversed and deleted
+// Preconditions:    None
+// Postconditions:   All nodes in this subtree have been deleted
+// Return value:     True - Signal of successful deletion traversal
+// Functions called: deletePostOrder()
 bool deletePostOrder();
 bool deletePostOrder(NodeGeneric<typeT>* nodePtr);
 
-// #obliviate() - Deletes all nodes within the BST, leaving headPtr pointing at nullptr
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #obliviate()
+//-------------------------------------|
+// Description:      Deletes all nodes within the BST
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   All tree nodes have been deleted.
+//                   headNodePtr == nullptr
+// Return value:     None
+// Functions called: deletePostOrder()
 void obliviate();
 
-// #traversePreOrder() - Helper method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traversePreOrder(NodeGeneric*)
+//-------------------------------------|
+// Description:      Recursive pre-order traversal method
+// Parameters:       NodeGeneric* arg1 - Pointer to the node to traverse
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+// Functions called: traversePreOrder()
+//                   visit()
 bool traversePreOrder();
 bool traversePreOrder(NodeGeneric<typeT>* nodePtr);
 
-// #traverseInOrder() - Helper method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traverseInOrder(NodeGeneric*)
+//-------------------------------------|
+// Description:      Recursive in-order traversal method
+// Parameters:       NodeGeneric* arg1 - Pointer to the node to traverse
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+// Functions called: traverseInOrder()
+//                   visit()
 bool traverseInOrder();
 bool traverseInOrder(NodeGeneric<typeT>* nodePtr);
 
-// #traversePostOrder() - Helper method
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #traversePostOrder(NodeGeneric*)
+//-------------------------------------|
+// Description:      Recursive post-order traversal method
+// Parameters:       NodeGeneric* arg1 - Pointer to the node to traverse
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - Signal of successful recursive traversal
+// Functions called: traversePostOrder()
+//                   visit()
 bool traversePostOrder();
 bool traversePostOrder(NodeGeneric<typeT>* nodePtr);
 
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #visit(NodeGeneric)
+//-------------------------------------|
+// Description:      Visits the node indicated by sending the nodeData content to cout.
+// Parameters:       NodeGeneric* - The target node being visited
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     None
+// Functions called: None
 void visit(NodeGeneric<typeT>* thisNodePtr) const;
 
 
@@ -299,49 +334,54 @@ public:
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X---------------------X
-// |    #find(string)    |
-// X---------------------X
+//-------------------------------------|
+// #find(string)
+//-------------------------------------|
 // Finds a node with an equal value of the string argument
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-bool find(string someValue);
+// Parameters:       typeT - The data to search for
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     True - An equivalent node was found
+//                   False - An equivalent node was not found
+// Functions called: None
+bool find(typeT someData) const;
 
-// X------------------------X
-// |    #insert(<typeT>)    |
-// X------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #insert(typeT)
+//-------------------------------------|
+// Description:      Attempts to insert data of typeT to the tree
+// Parameters:       typeT arg1 - The data to insert
+// Preconditions:    None
+// Postconditions:   Data has been found or search has run off the tree
+//                   Data has been assigned to an appropriate node of the tree
+// Return value:     True - Data was not found in the tree. Assigned off a leaf.
+//                   False - Data found in the tree, assignment still occured
+// Functions called: NodeGeneric()
 bool insert(typeT& someData); // Gets passed a LLC by reference
 
-// X-------------------X
-// |    #printout()    |
-// X-------------------X
-// Method capable of traversing the BST in pre-, post-, and in-order traversals
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-void printout();
+//-------------------------------------|
+// #printout()
+//-------------------------------------|
+// Description:      Prints the tree to console
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     None
+// Functions called: traversePreOrder() - Optional
+//                   traverseInOrder - Prints tree in an in-order traversal
+//                   traversePostOrder() - Optional
+void printout() const;
 
-// #setDelete() -
-// X-----------------------------------X
-// |    #NAME    |
-// X-----------------------------------X
-// Description:      
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #setDelete()
+//-------------------------------------|
+// Description:      Finds a node with matching data and sets its deletion flag to true
+// Parameters:       typeT - The target data to find
+// Preconditions:    None
+// Postconditions:   Target node has been set to deleted or nothing happens
+// Return value:     True - 'Deletion' successful
+//                   False - Node not found
+// Functions called: retrieve()
 bool setDelete(typeT someData);
 
 
@@ -352,37 +392,39 @@ bool setDelete(typeT someData);
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X---------------------X
-// |    #BSTGeneric()    |
-// X---------------------X
+//-------------------------------------|
+// #BSTGeneric()
+//-------------------------------------|
 // Default constructor for the BSTGeneric class
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   An empty binary tree has been allocated
+// Return value:     None
+// Functions called: None
 BSTGeneric();
 
-// X---------------------------X
-// |    #BSTGeneric(string)    |
-// X---------------------------X
+//-------------------------------------|
+// #BSTGeneric(string)
+//-------------------------------------|
 // Constructor of the BSTGeneric class from a file address
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       string arg1 - A file address (name)
+// Preconditions:    None
+// Postconditions:   A binary tree of strings has been generated
+// Return value:     None
+// Functions called: insert()
+//                   ifstream.open()
+//                   ifstream.close()
 BSTGeneric(string fileAddress);
 
-// X----------------------X
-// |    #~BSTGeneric()    |
-// X----------------------X
+//-------------------------------------|
+// #~BSTGeneric()
+//-------------------------------------|
 // Default destructor of the BSTGeneric class
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   All memory allocated for BST Nodes has been deallocated
+// Return value:     None
+// Functions called: obliviate()
 ~BSTGeneric();
 
 
@@ -393,37 +435,39 @@ BSTGeneric(string fileAddress);
 //
 //-------|---------|---------|---------|---------|---------|---------|---------|
 
-// X-----------------------X
-// |    #getRootValue()    |
-// X-----------------------X
-// Returns the root node's data field
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-typeT& getRootValue();
+//-------------------------------------|
+// #getRootValue()
+//-------------------------------------|
+// Description:      Returns the root node's data field
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     typeT& - A generic data object
+// Functions called: None
+typeT& getRootValue() const;
 
-// X-------------------X
-// |    #getValue()    |
-// X-------------------X
-// Returns the tree's data field (its name)
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
-string getValue();
+//-------------------------------------|
+// #getValue()
+//-------------------------------------|
+// Description:      Returns the tree's data field (its name)
+// Parameters:       None
+// Preconditions:    None
+// Postconditions:   None
+// Return value:     string - The name of the tree
+// Functions called: None
+string getValue() const;
 
-// X-------------------X
-// |    #setValue()    |
-// X-------------------X
-// Sets the tree's data field (its name)
-// Parameters:       
-// Preconditions:    
-// Postconditions:   
-// Return value:     
-// Functions called: 
+//-------------------------------------|
+// #setValue()
+//-------------------------------------|
+// Description:      Sets the tree's data field (its name)
+// Parameters:       string arg1 - The name to enter
+// Preconditions:    None
+// Postconditions:   treeData == someValue
+// Return value:     None
+// Functions called: None
 void setValue( string someValue );
 
 }; // Closing class 'BSTGeneric'
+
+// ---- END STUDENT CODE ----
