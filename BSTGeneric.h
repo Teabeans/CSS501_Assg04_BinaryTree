@@ -370,7 +370,7 @@ bool insert(typeT& someData); // Gets passed a LLC by reference
 // Functions called: traversePreOrder() - Optional
 //                   traverseInOrder - Prints tree in an in-order traversal
 //                   traversePostOrder() - Optional
-void printout() const;
+void printout() ;
 
 //-------------------------------------|
 // #setDelete()
