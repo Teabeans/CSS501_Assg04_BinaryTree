@@ -448,7 +448,7 @@ template <class typeT>
 bool BSTGeneric<typeT>::find(typeT someData) const {
    // If the tree is empty, do nothing
    if (rootPtr == nullptr) {
-      cout << "No value found. This tree is empty." << endl;
+      // cout << "No value found. This tree is empty." << endl; // DEBUG
       return(false);
    }
    // Otherwise, start at the rootPtr
@@ -633,7 +633,7 @@ BSTGeneric<typeT>::BSTGeneric(string fileAddress) {
    fileInputObj.open(fileAddress);
    // Confirm that file was opened. Report otherwise if not.
    if (!fileInputObj) {
-      cout << "Unable to open file";
+      cout << "Unable to open file: '" << fileAddress << "'" << endl << endl;
    }
    // Read the file
    while (fileInputObj >> aWord) {
